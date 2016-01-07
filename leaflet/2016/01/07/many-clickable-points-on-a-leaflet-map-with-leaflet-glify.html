@@ -20,8 +20,10 @@
     <header class="site-header">
 
   <div class="wrapper">
-
-    <a class="site-title" href="/">123k.pl</a>
+      <a class="site-title" href="/">123k.pl</a>
+    <div class="site-sub-title">
+      (mostly|almost|hardly) interesting things
+    </div>
 
     <nav class="site-nav">
       <a href="#" class="menu-icon">
@@ -83,31 +85,33 @@ always get a point clicked.</p>
 
 <p>The actual code to use the plugin is a one-liner.</p>
 
-<figure class="highlight"><pre><code class="language-coffee-script" data-lang="coffee-script"><span class="na">addCoverage</span><span class="o">:</span> <span class="p">()</span> <span class="o">-&gt;</span>
-  <span class="nx">callback</span> <span class="o">=</span> <span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span>
-    <span class="nx">points</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">L</span><span class="p">.</span><span class="na">glify</span><span class="p">.</span><span class="na">Points</span><span class="p">({</span><span class="na">map</span><span class="o">:</span> <span class="vi">@</span><span class="na">map</span><span class="p">,</span> <span class="na">click</span><span class="o">:</span> <span class="vi">@</span><span class="na">pointClicked</span><span class="p">,</span> <span class="na">data</span><span class="o">:</span> <span class="nx">response</span><span class="p">,</span> <span class="na">color</span><span class="o">:</span> <span class="s">'black'</span><span class="p">})</span>
-  <span class="nx">$</span><span class="p">.</span><span class="na">get</span> <span class="s">'/map/coverage'</span><span class="p">,</span> <span class="nx">callback</span><span class="p">,</span> <span class="s">'json'</span></code></pre></figure>
+<noscript><pre>addCoverage: () -&gt;
+  callback = (response) =&gt;
+    points = new L.glify.Points({map: @map, click: @pointClicked, data: response, color: &#39;black&#39;})
+  $.get &#39;/map/coverage&#39;, callback, &#39;json&#39;</pre></noscript>
+<script src="https://gist.github.com/efwe/683e7db0c4c22f5a52d4.js?file=add_coverage.coffee"> </script>
 
 <p>Here’s the callback I use when a point is clicked. Interesting detail. You should call <code class="highlighter-rouge">L.DomEvent.stopPropagation(event)</code> to
 stop the event handling if you have other click-backs registered on your map.</p>
 
-<figure class="highlight"><pre><code class="language-coffee-script" data-lang="coffee-script"><span class="na">pointClicked</span><span class="o">:</span> <span class="p">(</span><span class="nx">point</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">event</span><span class="p">)</span> <span class="o">-&gt;</span>
-  <span class="k">if</span> <span class="vi">@</span><span class="na">marker</span>
-    <span class="vi">@</span><span class="na">map</span><span class="p">.</span><span class="na">removeLayer</span><span class="p">(</span><span class="vi">@</span><span class="na">marker</span><span class="p">)</span>
-  <span class="vi">@</span><span class="na">marker</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="na">marker</span><span class="p">(</span><span class="nx">point</span><span class="p">).</span><span class="na">addTo</span><span class="p">(</span><span class="vi">@</span><span class="na">map</span><span class="p">)</span>
-  <span class="nx">clickBack</span> <span class="o">=</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">-&gt;</span>
-    <span class="nx">L</span><span class="p">.</span><span class="na">DomEvent</span><span class="p">.</span><span class="na">stopPropagation</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span>
-  <span class="vi">@</span><span class="na">marker</span><span class="p">.</span><span class="na">on</span><span class="p">(</span><span class="s">'click'</span><span class="p">,</span> <span class="nx">clickBack</span><span class="p">)</span>
+<noscript><pre>pointClicked: (point, options, event) -&gt;
+  if @marker
+    @map.removeLayer(@marker)
+  @marker = L.marker(point).addTo(@map)
+  clickBack = (event) -&gt;
+    L.DomEvent.stopPropagation(event)
+  @marker.on(&#39;click&#39;, clickBack)
 
-  <span class="nx">callback</span> <span class="o">=</span> <span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span>
-    <span class="k">if</span> <span class="vi">@</span><span class="na">geoJsonLayer</span>
-      <span class="vi">@</span><span class="na">map</span><span class="p">.</span><span class="na">removeLayer</span><span class="p">(</span><span class="vi">@</span><span class="na">geoJsonLayer</span><span class="p">)</span>
-    <span class="vi">@</span><span class="na">geoJsonLayer</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="na">geoJson</span><span class="p">(</span><span class="nx">response</span><span class="p">,{</span>
-      <span class="na">onEachFeature</span><span class="o">:</span> <span class="p">(</span><span class="nx">feature</span><span class="p">,</span> <span class="nx">layer</span><span class="p">)</span> <span class="o">=&gt;</span>
-        <span class="vi">@</span><span class="na">marker</span><span class="p">.</span><span class="na">bindPopup</span><span class="p">(</span><span class="s">'&lt;a href="geo/routes/'</span><span class="o">+</span><span class="nx">feature</span><span class="p">.</span><span class="na">properties</span><span class="p">.</span><span class="na">route_id</span><span class="p">.</span><span class="na">$oid</span><span class="o">+</span><span class="s">'"&gt;'</span><span class="o">+</span><span class="nx">feature</span><span class="p">.</span><span class="na">properties</span><span class="p">.</span><span class="na">route_title</span><span class="o">+</span><span class="s">'&lt;/a&gt;&lt;br&gt;'</span><span class="o">+</span><span class="nx">feature</span><span class="p">.</span><span class="na">properties</span><span class="p">.</span><span class="na">route_start</span><span class="p">)</span>
-    <span class="p">})</span>
-    <span class="vi">@</span><span class="na">map</span><span class="p">.</span><span class="na">addLayer</span><span class="p">(</span><span class="vi">@</span><span class="na">geoJsonLayer</span><span class="p">)</span>
-  <span class="nx">$</span><span class="p">.</span><span class="na">get</span> <span class="s">'/map/routes/to/'</span> <span class="o">+</span> <span class="nx">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s">'/'</span> <span class="o">+</span> <span class="nx">point</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nx">callback</span><span class="p">,</span> <span class="s">'json'</span></code></pre></figure>
+  callback = (response) =&gt;
+    if @geoJsonLayer
+      @map.removeLayer(@geoJsonLayer)
+    @geoJsonLayer = L.geoJson(response,{
+      onEachFeature: (feature, layer) =&gt;
+        @marker.bindPopup(&#39;&lt;a href=&quot;geo/routes/&#39;+feature.properties.route_id.$oid+&#39;&quot;&gt;&#39;+feature.properties.route_title+&#39;&lt;/a&gt;&lt;br&gt;&#39;+feature.properties.route_start)
+    })
+    @map.addLayer(@geoJsonLayer)
+  $.get &#39;/map/routes/to/&#39; + point[0] + &#39;/&#39; + point[1], callback, &#39;json&#39;</pre></noscript>
+<script src="https://gist.github.com/efwe/28c03b9c10c15cfda165.js?file=point_clicked.coffee"> </script>
 
 <p>You can see the result at <a href="https://123k.org/coverage">https://123k.org/coverage</a>.</p>
 

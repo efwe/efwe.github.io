@@ -110,16 +110,16 @@ pre {
  * Wrapper
  */
 .wrapper {
-  max-width: -webkit-calc(800px - (30px * 2));
-  max-width: calc(800px - (30px * 2));
+  max-width: -webkit-calc(1200 - (30px * 2));
+  max-width: calc(1200 - (30px * 2));
   margin-right: auto;
   margin-left: auto;
   padding-right: 30px;
   padding-left: 30px; }
   @media screen and (max-width: 800px) {
     .wrapper {
-      max-width: -webkit-calc(800px - (30px));
-      max-width: calc(800px - (30px));
+      max-width: -webkit-calc(1200 - (30px));
+      max-width: calc(1200 - (30px));
       padding-right: 15px;
       padding-left: 15px; } }
 
@@ -152,12 +152,24 @@ pre {
   position: relative; }
 
 .site-title {
-  font-size: 26px;
-  line-height: 56px;
+  font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;
+  font-weight: bolder;
+  font-size: 86px;
+  line-height: 96px;
   letter-spacing: -1px;
   margin-bottom: 0;
   float: left; }
   .site-title, .site-title:visited {
+    color: #424242; }
+
+.site-sub-title {
+  font-size: 26px;
+  line-height: 56px;
+  letter-spacing: -1px;
+  margin-bottom: 0;
+  margin-left: 30px;
+  float: bottom; }
+  .site-sub-title, .site-sub-title:visited {
     color: #424242; }
 
 .site-nav {

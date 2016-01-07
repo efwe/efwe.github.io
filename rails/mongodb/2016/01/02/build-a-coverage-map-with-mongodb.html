@@ -20,8 +20,10 @@
     <header class="site-header">
 
   <div class="wrapper">
-
-    <a class="site-title" href="/">123k.pl</a>
+      <a class="site-title" href="/">123k.pl</a>
+    <div class="site-sub-title">
+      (mostly|almost|hardly) interesting things
+    </div>
 
     <nav class="site-nav">
       <a href="#" class="menu-icon">
@@ -75,43 +77,46 @@ shows me where I’ve been with the bike.</p>
 <p>As I start all of my rides at my home and eventually return there I have a center where to start the coverage.
 From there I started the following algorithm.</p>
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">step</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">1</span> <span class="c1"># all points within 100 meters</span>
-<span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="nf">.</span><span class="mi">500</span><span class="p">).</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="c1"># for the next 50km</span>
-  <span class="n">min_distance</span> <span class="o">=</span> <span class="p">((</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">step</span><span class="p">)</span><span class="o">/</span><span class="no">EARTH_RADIUS</span>
-  <span class="n">max_distance</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">step</span><span class="p">)</span><span class="o">/</span><span class="no">EARTH_RADIUS</span>
-  <span class="n">hull</span> <span class="o">=</span> <span class="n">hull_for</span> <span class="n">min_distance</span><span class="p">,</span> <span class="n">max_distance</span> <span class="c1"># calculate the convex hull for the points in this area</span>
-  <span class="k">unless</span> <span class="n">hull</span><span class="p">.</span><span class="nf">empty?</span>
-    <span class="c1">#remap once more</span>
-    <span class="n">hull</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="nb">p</span><span class="o">|</span>
-      <span class="n">points</span> <span class="o">&lt;&lt;</span> <span class="p">[</span><span class="nb">p</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="c1"># remember points</span>
-    <span class="p">}</span>
-  <span class="k">end</span>
-  <span class="k">if</span> <span class="n">i</span><span class="o">%</span><span class="mi">100</span><span class="o">==</span><span class="mi">0</span>
-    <span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span><span class="p">.</span><span class="nf">info</span> <span class="s2">"Finished "</span><span class="o">+</span><span class="p">(</span><span class="n">i</span><span class="o">/</span><span class="mi">10</span><span class="p">).</span><span class="nf">to_s</span><span class="o">+</span><span class="s2">" km"</span>
-  <span class="k">end</span>
-<span class="p">}</span></code></pre></figure>
+<noscript><pre>step = 0.1 # all points within 100 meters
+points = []
+(1..500).each { |i| # for the next 50km
+  min_distance = ((i-1)*step)/EARTH_RADIUS
+  max_distance = (i*step)/EARTH_RADIUS
+  hull = hull_for min_distance, max_distance # calculate the convex hull for the points in this area
+  unless hull.empty?
+    #remap once more
+    hull.each { |p|
+      points &lt;&lt; [p[1], p[0]] # remember points
+    }
+  end
+  if i%100==0
+    Rails.logger.info &quot;Finished &quot;+(i/10).to_s+&quot; km&quot;
+  end
+}</pre></noscript>
+<script src="https://gist.github.com/efwe/65e28c72c9948da0e9f8.js?file=coverage.rb"> </script>
 
 <p>It does 100m steps for 50km and selects all points in the area between min/max distance.</p>
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">hull_for</span><span class="p">(</span><span class="n">min_distance</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">)</span>
-  <span class="n">client</span> <span class="o">=</span> <span class="no">TrackPoint</span><span class="p">.</span><span class="nf">mongo_client</span>
-  <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
-  <span class="n">client</span><span class="p">.</span><span class="nf">command</span><span class="p">({</span><span class="ss">geoNear: </span><span class="s1">'track_points'</span><span class="p">,</span> <span class="ss">near: </span><span class="p">[</span><span class="mi">20</span><span class="o">.</span><span class="mi">459423</span><span class="p">,</span> <span class="mi">50</span><span class="o">.</span><span class="mi">799929</span><span class="p">]</span> <span class="p">,</span> <span class="ss">spherical: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">num: </span><span class="mi">15000</span><span class="p">,</span> <span class="ss">minDistance: </span><span class="n">min_distance</span><span class="p">,</span> <span class="ss">maxDistance: </span><span class="n">max_distance</span><span class="p">,</span> <span class="ss">distanceMultiplier: </span><span class="no">EARTH_RADIUS</span><span class="p">}).</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">document</span><span class="o">|</span>
-    <span class="n">document</span><span class="p">[</span><span class="s1">'results'</span><span class="p">].</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">point</span><span class="o">|</span>
-      <span class="n">points</span> <span class="o">&lt;&lt;</span> <span class="n">point</span><span class="p">[</span><span class="s1">'obj'</span><span class="p">][</span><span class="s1">'location'</span><span class="p">]</span>
-    <span class="k">end</span>
-  <span class="p">}</span>
-  <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
-  <span class="k">if</span> <span class="n">points</span><span class="p">.</span><span class="nf">empty?</span>
-    <span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span><span class="p">.</span><span class="nf">warn</span> <span class="s1">'no hull for no points - returning empty hull[]'</span>
-  <span class="k">else</span>
-    <span class="n">hull_polygon</span> <span class="o">=</span> <span class="no">HullCalc</span><span class="p">.</span><span class="nf">convex_hull</span> <span class="n">points</span>
-    <span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span><span class="p">.</span><span class="nf">info</span> <span class="s2">"calculated hull polygon with </span><span class="si">#{</span><span class="n">hull_polygon</span><span class="p">.</span><span class="nf">size</span><span class="si">}</span><span class="s2"> points from a total of </span><span class="si">#{</span><span class="n">points</span><span class="p">.</span><span class="nf">size</span><span class="si">}</span><span class="s2"> points"</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">hull_polygon</span>
-  <span class="k">end</span>
-  <span class="n">result</span>
-<span class="k">end</span></code></pre></figure>
+<noscript><pre>def hull_for(min_distance, max_distance)
+  client = TrackPoint.mongo_client
+  points = []
+  client.command({geoNear: &#39;track_points&#39;, near: [20.459423, 50.799929] , spherical: true, num: 15000, minDistance: min_distance, maxDistance: max_distance, distanceMultiplier: EARTH_RADIUS}).each { |document|
+    document[&#39;results&#39;].each do |point|
+      points &lt;&lt; point[&#39;obj&#39;][&#39;location&#39;]
+    end
+  }
+  result = []
+  if points.empty?
+    Rails.logger.warn &#39;no hull for no points - returning empty hull[]&#39;
+  else
+    hull_polygon = HullCalc.convex_hull points
+    Rails.logger.info &quot;calculated hull polygon with #{hull_polygon.size} points from a total of #{points.size} points&quot;
+    result = hull_polygon
+  end
+  result
+end
+</pre></noscript>
+<script src="https://gist.github.com/efwe/675f2d2d56470933aaa5.js?file=hull_for.rb"> </script>
 
 <p>The trick is, that I only consider the points of the <a href="https://en.wikipedia.org/wiki/Convex_hull">convex hull</a>.
 I chose the Jarvis March algorithm as completely described <a href="http://tomswitzer.net/2009/12/jarvis-march/">here</a>.</p>
