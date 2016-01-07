@@ -1,3 +1,5 @@
 source "https://rubygems.org"
-gem 'octopress', '~> 3.0.0.rc'
+ruby '2.3.0'
+
+gem 'octopress', '~> 3.0'
 gem 'rake'
