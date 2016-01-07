@@ -6,15 +6,15 @@
 </description>
     <link>http://123k.pl/</link>
     <atom:link href="http://123k.pl/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 07 Jan 2016 10:45:50 +0100</pubDate>
-    <lastBuildDate>Thu, 07 Jan 2016 10:45:50 +0100</lastBuildDate>
+    <pubDate>Thu, 07 Jan 2016 11:42:54 +0100</pubDate>
+    <lastBuildDate>Thu, 07 Jan 2016 11:42:54 +0100</lastBuildDate>
     <generator>Jekyll v3.0.1</generator>
     
       <item>
         <title>Many Clickable Points on a Leaflet Map With Leaflet.glify</title>
         <description>&lt;h1 id=&quot;problem&quot;&gt;Problem&lt;/h1&gt;
 &lt;p&gt;As seen in the &lt;a href=&quot;http://localhost:4000/rails/mongodb/2016/01/02/build-a-coverage-map-with-mongodb.html&quot;&gt;post before&lt;/a&gt;
-we collected a 12.000 points which we want to display on a leaflet map.
+we collected some 12.000 points which we want to display on a leaflet map.
 Every attempt to put that many points on one map failed. Firefox completely stopped working, chrome did
 a  little bit better and stayed responsive, but that was not a solution at all.&lt;/p&gt;
 
@@ -128,7 +128,7 @@ From there I started the following algorithm.&lt;/p&gt;
 &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;The trick is, that I only consider the points of the &lt;a href=&quot;https://en.wikipedia.org/wiki/Convex_hull&quot;&gt;convex hull&lt;/a&gt;.
-I chose the (Jarvis March) algorithm as completely described &lt;a href=&quot;http://tomswitzer.net/2009/12/jarvis-march/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+I chose the Jarvis March algorithm as completely described &lt;a href=&quot;http://tomswitzer.net/2009/12/jarvis-march/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;This is very efficient, most of the points are not considered (A random output of my job is
 &lt;code class=&quot;highlighter-rouge&quot;&gt;calculated hull polygon with 22 points from a total of 2217 points&lt;/code&gt;). Finally I only have 12033 points left.
