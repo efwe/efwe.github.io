@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Show routes to current geohash</title>
+  <meta name="description" content="The planMy geohashing alert-system at 123k.org shows the current geohash for my home graticule. The plan is to the nearest route which passes by.">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://123k.pl/leaflet/mongodb/geohashing/2016/01/13/show-routes-to-current-geohash.html">
+  <link rel="alternate" type="application/rss+xml" title="123k.pl" href="http://123k.pl/feed.xml" />
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+      <a class="site-title" href="/">123k.pl</a>
+    <div class="site-sub-title">
+      (mostly|almost|hardly) interesting things
+    </div>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Show routes to current geohash</h1>
+    <p class="post-meta">Jan 13, 2016</p>
+  </header>
+
+  <article class="post-content">
+    <h1 id="the-plan">The plan</h1>
+<p>My geohashing alert-system at <a href="https://123k.org/geohashing">123k.org</a> shows the current <a href="http://wiki.xkcd.com/geohashing/">geohash</a> for my home <a href="https://en.wikipedia.org/wiki/Geographic_coordinate_system">graticule</a>. The plan is to the nearest route which passes by.</p>
+
+<h1 id="finding-something">Finding something</h1>
+<p>As mentioned <a href="http://123k.pl/rails/mongodb/2016/01/02/build-a-coverage-map-with-mongodb.html">earlier</a> I have all points i ever visited in a collection.
+This collection holds a <a href="https://docs.mongodb.org/manual/applications/geospatial-indexes/">geospatial index</a>. Therefore I can issue mongo queries with
+the <code class="highlighter-rouge">$nearSphere</code> command. This command finds the first points from a given location.</p>
+
+<noscript><pre> def route_to
+    lat = params[:lat].to_f
+    lon = params[:lon].to_f
+    first_point = TrackPoint.where({:location =&gt; {&#39;$nearSphere&#39; =&gt; [lat, lon]}}).limit(1).first()
+    route = Route.find(first_point.route_id)
+    gjson_line = {
+        :type =&gt; &quot;Feature&quot;,
+        :geometry =&gt; {
+            :type =&gt; &quot;LineString&quot;,
+            :coordinates =&gt; route.track_points.map { |p| p.location }
+        }
+    }
+    feature_collection = {
+        :type =&gt; &quot;FeatureCollection&quot;,
+        :features =&gt; [gjson_line]
+    }
+    render :json =&gt; Yajl::Encoder.encode(feature_collection), :content_type =&gt; &#39;application/json&#39;
+  end
+</pre></noscript>
+<script src="https://gist.github.com/efwe/c73ab0d887110156c2f9.js?file=first_route.rb"> </script>
+
+<p>So this just works. But what about other routes which may also be nice and just around the corner?
+We can select many points around the hash point and check which routes they’re on.</p>
+
+<noscript><pre> def routes_to
+    lat = params[:lat].to_f
+    lon = params[:lon].to_f
+    features = []
+    TrackPoint.collection.aggregate([{&#39;$geoNear&#39; =&gt; {near: [lon, lat], spherical: true, num: 500, maxDistance: 5/6371, distanceMultiplier: 6371, distanceField: &#39;dist.calculated&#39;}}, {&#39;$group&#39; =&gt; {&#39;_id&#39; =&gt; &#39;$route_id&#39;}}]).each { |route_id|
+      route = Route.find(route_id[:_id])
+      gjson_line = {
+          :type =&gt; &quot;Feature&quot;,
+          :geometry =&gt; {
+              :type =&gt; &quot;LineString&quot;,
+              :coordinates =&gt; route.track_points.map { |p| p.location }
+          }
+      }
+      features &lt;&lt; gjson_line
+    }
+
+    feature_collection = {
+        :type =&gt; &quot;FeatureCollection&quot;,
+        :features =&gt; features
+    }
+    render :json =&gt; Yajl::Encoder.encode(feature_collection), :content_type =&gt; &#39;application/json&#39;
+  end
+</pre></noscript>
+<script src="https://gist.github.com/efwe/dfc73a236cfc94ef3313.js?file=routes_to.rb"> </script>
+
+<p>The trick here is that we have a implicit <code class="highlighter-rouge">distinct</code> by grouping the points according to their route-id. So we really find
+every route within 5km just once.</p>
+
+<p>So this also works, but it is not 100% predictable <em>how many</em> routes we really find. If the point sits just around the corner,
+this algorithm will find tons of routes which then are all queried and displayed. Also not useful. I’ll have to invent a custom
+<code class="highlighter-rouge">limit</code> here. Or I find a solution to limit the results of the aggregation run - this is just open now.</p>
+
+<p>I think I’ll stick with the first approach as it nicely stops finding things after the first point and as nobody really
+uses my site anyways I provide the second approach via button click.</p>
+
+<h1 id="showing-the-routes">Showing the routes</h1>
+<p>Showing the routes is dead easy again. We just fetch some geo-json and add it to the map:</p>
+
+<noscript><pre>  firstRouteToPoint: (hashPoint) -&gt;
+    callback = (response) =&gt;
+      L.geoJson(response).addTo(@map)
+    $.get &#39;/map/first/route/to/&#39; + hashPoint[0] + &#39;/&#39; + hashPoint[1], callback, &#39;json&#39;
+
+  addRoutesToPoint: (hashPoint) -&gt;
+    callback = (response) =&gt;
+      L.geoJson(response, {
+        style: (feature) =&gt;
+          return {color: @random_color()}
+      }).addTo(@map)
+    $.get &#39;/map/routes/to/&#39; + hashPoint[0] + &#39;/&#39; + hashPoint[1], callback, &#39;json&#39;
+
+  random_color: () -&gt;
+    letters = &#39;0123456789ABCDEF&#39;.split(&#39;&#39;)
+    color = &#39;#&#39;
+    color += letters[Math.round(Math.random() * 15)] for [0..5]
+    color
+
+</pre></noscript>
+<script src="https://gist.github.com/efwe/c78ad24bad8368412b4f.js?file=show_routes.coffee"> </script>
+
+<p>As my geohashing page shows the whole graticule, but my bike-rides just cover some 20km radius I only display the
+route when the point sits within 35km of my home. So we need a distance calculation. This is again easy as leaflet just provides
+this.</p>
+
+<figure class="highlight"><pre><code class="language-coffee-script" data-lang="coffee-script"><span class="k">if</span> <span class="nx">L</span><span class="p">.</span><span class="na">latLng</span><span class="p">(</span><span class="vi">@</span><span class="na">location</span><span class="p">.</span><span class="na">lat</span><span class="p">,</span> <span class="vi">@</span><span class="na">location</span><span class="p">.</span><span class="na">lon</span><span class="p">).</span><span class="na">distanceTo</span><span class="p">(</span><span class="nx">L</span><span class="p">.</span><span class="na">latLng</span><span class="p">(</span><span class="nx">lat</span><span class="p">,</span> <span class="nx">lon</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">35000</span>
+  <span class="vi">@</span><span class="na">firstRouteToPoint</span><span class="p">([</span><span class="nx">lon</span><span class="p">,</span> <span class="nx">lat</span><span class="p">])</span></code></pre></figure>
+
+<p>As this feature is not visible every day I took a screenshot for reference. You can see, that the additional routes are not
+100% useful, especially because they are not clickable yet. But this is another feature.
+<img src="/assets/images/displayed_routes.png" /></p>
+
+  </article>
+
+  <div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+this.page.url = 'http://123k.pl/leaflet/mongodb/geohashing/2016/01/13/show-routes-to-current-geohash.html'; // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = '/leaflet/mongodb/geohashing/2016/01/13/show-routes-to-current-geohash'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//123k.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</div>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+    <div class="footer-col-wrapper">
+      <div class="footer-col  footer-col-1">
+        <ul class="contact-list">
+          <li>123k.pl</li>
+          <li><a href="mailto:fw@123k.pl">fw@123k.pl</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/efwe">
+              <span class="icon  icon--github">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+                </svg>
+              </span>
+
+              <span class="username">efwe</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/_efwe_">
+              <span class="icon  icon--twitter">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809
+                  c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/>
+                </svg>
+              </span>
+
+              <span class="username">_efwe_</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-3">
+        <p class="text">Random stuff about music, bikes and programming
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

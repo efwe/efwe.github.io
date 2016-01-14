@@ -6,92 +6,132 @@
 </description>
     <link>http://123k.pl/</link>
     <atom:link href="http://123k.pl/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 07 Jan 2016 19:07:34 +0100</pubDate>
-    <lastBuildDate>Thu, 07 Jan 2016 19:07:34 +0100</lastBuildDate>
+    <pubDate>Thu, 14 Jan 2016 13:18:45 +0100</pubDate>
+    <lastBuildDate>Thu, 14 Jan 2016 13:18:45 +0100</lastBuildDate>
     <generator>Jekyll v3.0.1</generator>
     
       <item>
-        <title>Leaflet, GeoJSON and Messagepack</title>
-        <description>&lt;h1 id=&quot;hypothesis-geo-data-is-good-for-message-pack&quot;&gt;Hypothesis: Geo-data is good for message-pack&lt;/h1&gt;
-&lt;p&gt;When I learned about &lt;a href=&quot;http://msgpack.org&quot;&gt;MessagePack&lt;/a&gt; recently, I thought I should check if this optimization is useful for
-geo-data. With leaflet one either consumes GeoJSON or simple lists of points to draw lines and points on the map. This json-data
-has essentially zero string-payload and is stuffed with small arrays of floats representing the points &lt;code class=&quot;highlighter-rouge&quot;&gt;[50.9668440185,20.0263859611]&lt;/code&gt;.&lt;/p&gt;
+        <title>Show routes to current geohash</title>
+        <description>&lt;h1 id=&quot;the-plan&quot;&gt;The plan&lt;/h1&gt;
+&lt;p&gt;My geohashing alert-system at &lt;a href=&quot;https://123k.org/geohashing&quot;&gt;123k.org&lt;/a&gt; shows the current &lt;a href=&quot;http://wiki.xkcd.com/geohashing/&quot;&gt;geohash&lt;/a&gt; for my home &lt;a href=&quot;https://en.wikipedia.org/wiki/Geographic_coordinate_system&quot;&gt;graticule&lt;/a&gt;. The plan is to the nearest route which passes by.&lt;/p&gt;
 
-&lt;p&gt;So my first feeling was, that there should be a huge safe when this information is not transported as string-literal but as a binary float.
-A small test on the &lt;a href=&quot;http://msgpack.org/index.html&quot;&gt;Try It!&lt;/a&gt; yielded:&lt;/p&gt;
+&lt;h1 id=&quot;finding-something&quot;&gt;Finding something&lt;/h1&gt;
+&lt;p&gt;As mentioned &lt;a href=&quot;http://123k.pl/rails/mongodb/2016/01/02/build-a-coverage-map-with-mongodb.html&quot;&gt;earlier&lt;/a&gt; I have all points i ever visited in a collection.
+This collection holds a &lt;a href=&quot;https://docs.mongodb.org/manual/applications/geospatial-indexes/&quot;&gt;geospatial index&lt;/a&gt;. Therefore I can issue mongo queries with
+the &lt;code class=&quot;highlighter-rouge&quot;&gt;$nearSphere&lt;/code&gt; command. This command finds the first points from a given location.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-console&quot; data-lang=&quot;console&quot;&gt;JSON 29 bytes: [50.7989240717,20.4648714792]
-MessagePack (hex) 19 bytes: 92 cb 40 49 66 43 24 db f8 26 cb 40 34 77 01 d1 38 01 d4&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;This would be a saving of 33%. Not so bad! That was my first impression. But then again. Wait..
-Why needs the msgpack that much bytes?&lt;/p&gt;
-
-&lt;h1 id=&quot;proof-digging-a-likkle-bit-deeper&quot;&gt;Proof: Digging a likkle bit deeper&lt;/h1&gt;
-&lt;p&gt;So msgpack decided to encode us the following &lt;code class=&quot;highlighter-rouge&quot;&gt;92 cb 40 49 66 43 24 db f8 26 cb 40 34 77 01 d1 38 01 d4&lt;/code&gt;. We try a little
-reverse-engineering now. According to the &lt;a href=&quot;https://github.com/msgpack/msgpack/blob/master/spec.md#formats-float&quot;&gt;spec&lt;/a&gt;
-We have two ‘IEEE 754 double precision floating point number’ stored as ‘float 64’. This can be easily seen because of the &lt;code class=&quot;highlighter-rouge&quot;&gt;cb&lt;/code&gt; parts.
-Things are getting even worse when we wanted to transmit &lt;code class=&quot;highlighter-rouge&quot;&gt;[20.12,50.34]&lt;/code&gt;. This are 13 JSON bytes and again 19 msg-pack bytes. 30% more this time.&lt;/p&gt;
-
-&lt;p&gt;So the questions is: Can the number 50.9668440185 be displayed with single precision also?
-Actually I should be able to really calculate this on paper, as playing with arbitrary floating point definitions was a cornerstone of the first semester at university… but I have to admit, that I’m not really able to do it right now.&lt;/p&gt;
-
-&lt;p&gt;So a small brute-force test on the rust playground has to help and it shows us, that the answer is: No.&lt;/p&gt;
-
-&lt;noscript&gt;&lt;pre&gt;fn main() {
-    let x: f32 = 51.0237269662;
-    println!(&amp;quot;The value of x is: {}&amp;quot;, x);
-    // The value of x is: 51.023727
-    let y: f64 = 51.0237269662;
-    println!(&amp;quot;The value of y is: {}&amp;quot;, y);
-    // The value of y is: 51.0237269662
-}&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/efwe/de3a3d18b755afb68ec0.js?file=test.rs&quot;&gt; &lt;/script&gt;
-
-&lt;p&gt;Why exactly the msgpack-playground used float 64 for the test with &lt;code class=&quot;highlighter-rouge&quot;&gt;20.12&lt;/code&gt;? I don’t know.
-For our use-case with the geo-points &lt;strong&gt;we have to stick with the float 64 variant and the maximum saving would be 33%&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;h1 id=&quot;using-msgpack-with-rails-and-coffee-script&quot;&gt;Using msgpack with rails and coffee-script&lt;/h1&gt;
-&lt;p&gt;After we saw, that there could be a substantial space saving on the wire with msgpack for our data we can try to really use it.
-Right now if have a special rails controler with &lt;code class=&quot;highlighter-rouge&quot;&gt;layout nil&lt;/code&gt; which does the same thing again and again. Rendering json for requests.
-After some investigation and registering the mime-type in initilizers/mime_types.rb &lt;code class=&quot;highlighter-rouge&quot;&gt;Mime::Type.register &quot;application/msgpack&quot;, :msgpack&lt;/code&gt;
-I eventually could have methods like this:&lt;/p&gt;
-
-&lt;noscript&gt;&lt;pre&gt;  def coverage
-    points = TrackPoint.mongo_client[:coverage].find.first
-    respond_to do |format|
-      format.json { render :json =&amp;gt; points, :content_type =&amp;gt; &amp;#39;application/json&amp;#39; }
-      format.msgpack { send_data MessagePack.pack(points), :type =&amp;gt; &amp;#39;application/msgpack&amp;#39;, :disposition =&amp;gt; &amp;#39;inline&amp;#39; }
-    end
+&lt;noscript&gt;&lt;pre&gt; def route_to
+    lat = params[:lat].to_f
+    lon = params[:lon].to_f
+    first_point = TrackPoint.where({:location =&amp;gt; {&amp;#39;$nearSphere&amp;#39; =&amp;gt; [lat, lon]}}).limit(1).first()
+    route = Route.find(first_point.route_id)
+    gjson_line = {
+        :type =&amp;gt; &amp;quot;Feature&amp;quot;,
+        :geometry =&amp;gt; {
+            :type =&amp;gt; &amp;quot;LineString&amp;quot;,
+            :coordinates =&amp;gt; route.track_points.map { |p| p.location }
+        }
+    }
+    feature_collection = {
+        :type =&amp;gt; &amp;quot;FeatureCollection&amp;quot;,
+        :features =&amp;gt; [gjson_line]
+    }
+    render :json =&amp;gt; Yajl::Encoder.encode(feature_collection), :content_type =&amp;gt; &amp;#39;application/json&amp;#39;
   end
 &lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/efwe/fb0188666fc6228b13e2.js?file=coverage_controller.rb&quot;&gt; &lt;/script&gt;
+&lt;script src=&quot;https://gist.github.com/efwe/c73ab0d887110156c2f9.js?file=first_route.rb&quot;&gt; &lt;/script&gt;
 
-&lt;p&gt;on client side my coffee uses plain jquery&lt;/p&gt;
+&lt;p&gt;So this just works. But what about other routes which may also be nice and just around the corner?
+We can select many points around the hash point and check which routes they’re on.&lt;/p&gt;
 
-&lt;noscript&gt;&lt;pre&gt;addCoverage: () -&amp;gt;
-  callback = (response) =&amp;gt;
-    points = new L.glify.Points({map: @map, click: @pointClicked, data: response, color: &amp;#39;black&amp;#39;})
-  $.get &amp;#39;/map/coverage&amp;#39;, callback, &amp;#39;json&amp;#39;&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/efwe/683e7db0c4c22f5a52d4.js?file=add_coverage.coffee&quot;&gt; &lt;/script&gt;
+&lt;noscript&gt;&lt;pre&gt; def routes_to
+    lat = params[:lat].to_f
+    lon = params[:lon].to_f
+    features = []
+    TrackPoint.collection.aggregate([{&amp;#39;$geoNear&amp;#39; =&amp;gt; {near: [lon, lat], spherical: true, num: 500, maxDistance: 5/6371, distanceMultiplier: 6371, distanceField: &amp;#39;dist.calculated&amp;#39;}}, {&amp;#39;$group&amp;#39; =&amp;gt; {&amp;#39;_id&amp;#39; =&amp;gt; &amp;#39;$route_id&amp;#39;}}]).each { |route_id|
+      route = Route.find(route_id[:_id])
+      gjson_line = {
+          :type =&amp;gt; &amp;quot;Feature&amp;quot;,
+          :geometry =&amp;gt; {
+              :type =&amp;gt; &amp;quot;LineString&amp;quot;,
+              :coordinates =&amp;gt; route.track_points.map { |p| p.location }
+          }
+      }
+      features &amp;lt;&amp;lt; gjson_line
+    }
 
+    feature_collection = {
+        :type =&amp;gt; &amp;quot;FeatureCollection&amp;quot;,
+        :features =&amp;gt; features
+    }
+    render :json =&amp;gt; Yajl::Encoder.encode(feature_collection), :content_type =&amp;gt; &amp;#39;application/json&amp;#39;
+  end
+&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/efwe/dfc73a236cfc94ef3313.js?file=routes_to.rb&quot;&gt; &lt;/script&gt;
+
+&lt;p&gt;The trick here is that we have a implicit &lt;code class=&quot;highlighter-rouge&quot;&gt;distinct&lt;/code&gt; by grouping the points according to their route-id. So we really find
+every route within 5km just once.&lt;/p&gt;
+
+&lt;p&gt;So this also works, but it is not 100% predictable &lt;em&gt;how many&lt;/em&gt; routes we really find. If the point sits just around the corner,
+this algorithm will find tons of routes which then are all queried and displayed. Also not useful. I’ll have to invent a custom
+&lt;code class=&quot;highlighter-rouge&quot;&gt;limit&lt;/code&gt; here. Or I find a solution to limit the results of the aggregation run - this is just open now.&lt;/p&gt;
+
+&lt;p&gt;I think I’ll stick with the first approach as it nicely stops finding things after the first point and as nobody really
+uses my site anyways I provide the second approach via button click.&lt;/p&gt;
+
+&lt;h1 id=&quot;showing-the-routes&quot;&gt;Showing the routes&lt;/h1&gt;
+&lt;p&gt;Showing the routes is dead easy again. We just fetch some geo-json and add it to the map:&lt;/p&gt;
+
+&lt;noscript&gt;&lt;pre&gt;  firstRouteToPoint: (hashPoint) -&amp;gt;
+    callback = (response) =&amp;gt;
+      L.geoJson(response).addTo(@map)
+    $.get &amp;#39;/map/first/route/to/&amp;#39; + hashPoint[0] + &amp;#39;/&amp;#39; + hashPoint[1], callback, &amp;#39;json&amp;#39;
+
+  addRoutesToPoint: (hashPoint) -&amp;gt;
+    callback = (response) =&amp;gt;
+      L.geoJson(response, {
+        style: (feature) =&amp;gt;
+          return {color: @random_color()}
+      }).addTo(@map)
+    $.get &amp;#39;/map/routes/to/&amp;#39; + hashPoint[0] + &amp;#39;/&amp;#39; + hashPoint[1], callback, &amp;#39;json&amp;#39;
+
+  random_color: () -&amp;gt;
+    letters = &amp;#39;0123456789ABCDEF&amp;#39;.split(&amp;#39;&amp;#39;)
+    color = &amp;#39;#&amp;#39;
+    color += letters[Math.round(Math.random() * 15)] for [0..5]
+    color
+
+&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/efwe/c78ad24bad8368412b4f.js?file=show_routes.coffee&quot;&gt; &lt;/script&gt;
+
+&lt;p&gt;As my geohashing page shows the whole graticule, but my bike-rides just cover some 20km radius I only display the
+route when the point sits within 35km of my home. So we need a distance calculation. This is again easy as leaflet just provides
+this.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-coffee-script&quot; data-lang=&quot;coffee-script&quot;&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;L&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;latLng&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;location&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;lat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;location&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;lon&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;distanceTo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;L&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;latLng&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;lat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;lon&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;35000&lt;/span&gt;
+  &lt;span class=&quot;vi&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;firstRouteToPoint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;lon&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;lat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;As this feature is not visible every day I took a screenshot for reference. You can see, that the additional routes are not
+100% useful, especially because they are not clickable yet. But this is another feature.
+&lt;img src=&quot;/assets/images/displayed_routes.png&quot; /&gt;&lt;/p&gt;
 </description>
-        <pubDate>Thu, 07 Jan 2016 14:20:08 +0100</pubDate>
-        <link>http://123k.pl/rails/leaflet/message-pack/2016/01/07/leaflet-geojson-and-messagepack.html</link>
-        <guid isPermaLink="true">http://123k.pl/rails/leaflet/message-pack/2016/01/07/leaflet-geojson-and-messagepack.html</guid>
+        <pubDate>Wed, 13 Jan 2016 15:28:00 +0100</pubDate>
+        <link>http://123k.pl/leaflet/mongodb/geohashing/2016/01/13/show-routes-to-current-geohash.html</link>
+        <guid isPermaLink="true">http://123k.pl/leaflet/mongodb/geohashing/2016/01/13/show-routes-to-current-geohash.html</guid>
         
-        
-        <category>rails</category>
         
         <category>leaflet</category>
         
-        <category>message-pack</category>
+        <category>mongodb</category>
+        
+        <category>geohashing</category>
         
       </item>
     
       <item>
         <title>Many Clickable Points on a Leaflet Map With Leaflet.glify</title>
         <description>&lt;h1 id=&quot;problem&quot;&gt;Problem&lt;/h1&gt;
-&lt;p&gt;As seen in the &lt;a href=&quot;http://localhost:4000/rails/mongodb/2016/01/02/build-a-coverage-map-with-mongodb.html&quot;&gt;post before&lt;/a&gt;
+&lt;p&gt;As seen in the &lt;a href=&quot;http://123k.pl/rails/mongodb/2016/01/02/build-a-coverage-map-with-mongodb.html&quot;&gt;post before&lt;/a&gt;
 we collected some 12.000 points which we want to display on a leaflet map.
 Every attempt to put that many points on one map failed. Firefox completely stopped working, chrome did
 a  little bit better and stayed responsive, but that was not a solution at all.&lt;/p&gt;

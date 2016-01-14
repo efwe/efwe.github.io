@@ -44,6 +44,8 @@ GEM
       jekyll (~> 3.0)
     octopress-hooks (2.6.1)
       jekyll (>= 2.0)
+    octopress-image-tag (1.1.0)
+      jekyll
     rake (10.4.2)
     rb-fsevent (0.9.7)
     rb-inotify (0.9.5)
@@ -63,6 +65,7 @@ PLATFORMS
 DEPENDENCIES
   jekyll-gist (~> 1.4)
   octopress (~> 3.0)
+  octopress-image-tag
   rake
 
 BUNDLED WITH
