@@ -6,16 +6,16 @@
 </description>
     <link>http://123k.pl/</link>
     <atom:link href="http://123k.pl/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 14 Jan 2016 13:18:45 +0100</pubDate>
-    <lastBuildDate>Thu, 14 Jan 2016 13:18:45 +0100</lastBuildDate>
+    <pubDate>Thu, 14 Jan 2016 14:47:07 +0100</pubDate>
+    <lastBuildDate>Thu, 14 Jan 2016 14:47:07 +0100</lastBuildDate>
     <generator>Jekyll v3.0.1</generator>
     
       <item>
         <title>Show routes to current geohash</title>
-        <description>&lt;h1 id=&quot;the-plan&quot;&gt;The plan&lt;/h1&gt;
+        <description>&lt;h1 id=&quot;the-plan&quot;&gt;The Plan&lt;/h1&gt;
 &lt;p&gt;My geohashing alert-system at &lt;a href=&quot;https://123k.org/geohashing&quot;&gt;123k.org&lt;/a&gt; shows the current &lt;a href=&quot;http://wiki.xkcd.com/geohashing/&quot;&gt;geohash&lt;/a&gt; for my home &lt;a href=&quot;https://en.wikipedia.org/wiki/Geographic_coordinate_system&quot;&gt;graticule&lt;/a&gt;. The plan is to the nearest route which passes by.&lt;/p&gt;
 
-&lt;h1 id=&quot;finding-something&quot;&gt;Finding something&lt;/h1&gt;
+&lt;h1 id=&quot;finding-something&quot;&gt;Finding Something&lt;/h1&gt;
 &lt;p&gt;As mentioned &lt;a href=&quot;http://123k.pl/rails/mongodb/2016/01/02/build-a-coverage-map-with-mongodb.html&quot;&gt;earlier&lt;/a&gt; I have all points i ever visited in a collection.
 This collection holds a &lt;a href=&quot;https://docs.mongodb.org/manual/applications/geospatial-indexes/&quot;&gt;geospatial index&lt;/a&gt;. Therefore I can issue mongo queries with
 the &lt;code class=&quot;highlighter-rouge&quot;&gt;$nearSphere&lt;/code&gt; command. This command finds the first points from a given location.&lt;/p&gt;
@@ -79,7 +79,7 @@ this algorithm will find tons of routes which then are all queried and displayed
 &lt;p&gt;I think I’ll stick with the first approach as it nicely stops finding things after the first point and as nobody really
 uses my site anyways I provide the second approach via button click.&lt;/p&gt;
 
-&lt;h1 id=&quot;showing-the-routes&quot;&gt;Showing the routes&lt;/h1&gt;
+&lt;h1 id=&quot;showing-the-routes&quot;&gt;Showing The Routes&lt;/h1&gt;
 &lt;p&gt;Showing the routes is dead easy again. We just fetch some geo-json and add it to the map:&lt;/p&gt;
 
 &lt;noscript&gt;&lt;pre&gt;  firstRouteToPoint: (hashPoint) -&amp;gt;
@@ -204,7 +204,7 @@ After some years I have 284792 track-points. So 300k entries is not ‘big-data�
 but it is too much to be displayed on a leaflet map at once. What I really wanted is a ‘Coverage View’, which just
 shows me where I’ve been with the bike.&lt;/p&gt;
 
-&lt;h1 id=&quot;the-algorithm&quot;&gt;The algorithm&lt;/h1&gt;
+&lt;h1 id=&quot;the-algorithm&quot;&gt;The Algorithm&lt;/h1&gt;
 
 &lt;p&gt;As I start all of my rides at my home and eventually return there I have a center where to start the coverage.
 From there I started the following algorithm.&lt;/p&gt;

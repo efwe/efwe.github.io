@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Show routes to current geohash</title>
-  <meta name="description" content="The planMy geohashing alert-system at 123k.org shows the current geohash for my home graticule. The plan is to the nearest route which passes by.">
+  <meta name="description" content="The PlanMy geohashing alert-system at 123k.org shows the current geohash for my home graticule. The plan is to the nearest route which passes by.">
 
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://123k.pl/leaflet/mongodb/geohashing/2016/01/13/show-routes-to-current-geohash.html">
@@ -64,10 +64,10 @@
   </header>
 
   <article class="post-content">
-    <h1 id="the-plan">The plan</h1>
+    <h1 id="the-plan">The Plan</h1>
 <p>My geohashing alert-system at <a href="https://123k.org/geohashing">123k.org</a> shows the current <a href="http://wiki.xkcd.com/geohashing/">geohash</a> for my home <a href="https://en.wikipedia.org/wiki/Geographic_coordinate_system">graticule</a>. The plan is to the nearest route which passes by.</p>
 
-<h1 id="finding-something">Finding something</h1>
+<h1 id="finding-something">Finding Something</h1>
 <p>As mentioned <a href="http://123k.pl/rails/mongodb/2016/01/02/build-a-coverage-map-with-mongodb.html">earlier</a> I have all points i ever visited in a collection.
 This collection holds a <a href="https://docs.mongodb.org/manual/applications/geospatial-indexes/">geospatial index</a>. Therefore I can issue mongo queries with
 the <code class="highlighter-rouge">$nearSphere</code> command. This command finds the first points from a given location.</p>
@@ -131,7 +131,7 @@ this algorithm will find tons of routes which then are all queried and displayed
 <p>I think I’ll stick with the first approach as it nicely stops finding things after the first point and as nobody really
 uses my site anyways I provide the second approach via button click.</p>
 
-<h1 id="showing-the-routes">Showing the routes</h1>
+<h1 id="showing-the-routes">Showing The Routes</h1>
 <p>Showing the routes is dead easy again. We just fetch some geo-json and add it to the map:</p>
 
 <noscript><pre>  firstRouteToPoint: (hashPoint) -&gt;
@@ -238,6 +238,7 @@ s.setAttribute('data-timestamp', +new Date());
       <div class="footer-col  footer-col-3">
         <p class="text">Random stuff about music, bikes and programming
 </p>
+        <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
       </div>
     </div>
 
