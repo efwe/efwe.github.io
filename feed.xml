@@ -6,8 +6,8 @@
 </description>
     <link>http://123k.pl/</link>
     <atom:link href="http://123k.pl/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 14 Jan 2016 14:47:07 +0100</pubDate>
-    <lastBuildDate>Thu, 14 Jan 2016 14:47:07 +0100</lastBuildDate>
+    <pubDate>Fri, 22 Jan 2016 19:33:23 +0100</pubDate>
+    <lastBuildDate>Fri, 22 Jan 2016 19:33:23 +0100</lastBuildDate>
     <generator>Jekyll v3.0.1</generator>
     
       <item>
@@ -112,8 +112,13 @@ this.&lt;/p&gt;
   &lt;span class=&quot;vi&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;firstRouteToPoint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;lon&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;lat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;As this feature is not visible every day I took a screenshot for reference. You can see, that the additional routes are not
-100% useful, especially because they are not clickable yet. But this is another feature.
-&lt;img src=&quot;/assets/images/displayed_routes.png&quot; /&gt;&lt;/p&gt;
+100% useful, especially because they are not clickable yet. But this is another feature.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/displayed_routes.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The first route is not so bad. It looks good but is also not clickable yet.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/first_route.png&quot; /&gt;&lt;/p&gt;
 </description>
         <pubDate>Wed, 13 Jan 2016 15:28:00 +0100</pubDate>
         <link>http://123k.pl/leaflet/mongodb/geohashing/2016/01/13/show-routes-to-current-geohash.html</link>
