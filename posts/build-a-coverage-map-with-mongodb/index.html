@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>123k.pl  | Build a Coverage Map With Mongodb</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.54.0" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.955516233bcafa4d2a1c13cea63c7b50.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Build a Coverage Map With Mongodb" />
+<meta property="og:description" content="Introduction When I started with my personal bike-track homepage at 123k.org a few years ago I decided to put all my tracks in a MongoDB. The model I use is very simple. I have a class Route which holds meta-data about the track and a class TrackPoint which represents a point and has a foreign key to the respective track (of course). After some years I have 612827 track-points. So 600k entries is not &lsquo;big-data&rsquo; exactly, but it is too much to be displayed on a leaflet map at once." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://123k.pl/posts/build-a-coverage-map-with-mongodb/" />
+<meta property="article:published_time" content="2016-01-02T19:38:06&#43;01:00"/>
+<meta property="article:modified_time" content="2016-01-02T19:38:06&#43;01:00"/>
+
+<meta itemprop="name" content="Build a Coverage Map With Mongodb">
+<meta itemprop="description" content="Introduction When I started with my personal bike-track homepage at 123k.org a few years ago I decided to put all my tracks in a MongoDB. The model I use is very simple. I have a class Route which holds meta-data about the track and a class TrackPoint which represents a point and has a foreign key to the respective track (of course). After some years I have 612827 track-points. So 600k entries is not &lsquo;big-data&rsquo; exactly, but it is too much to be displayed on a leaflet map at once.">
+
+
+<meta itemprop="datePublished" content="2016-01-02T19:38:06&#43;01:00" />
+<meta itemprop="dateModified" content="2016-01-02T19:38:06&#43;01:00" />
+<meta itemprop="wordCount" content="241">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Build a Coverage Map With Mongodb"/>
+<meta name="twitter:description" content="Introduction When I started with my personal bike-track homepage at 123k.org a few years ago I decided to put all my tracks in a MongoDB. The model I use is very simple. I have a class Route which holds meta-data about the track and a class TrackPoint which represents a point and has a foreign key to the respective track (of course). After some years I have 612827 track-points. So 600k entries is not &lsquo;big-data&rsquo; exactly, but it is too much to be displayed on a leaflet map at once."/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://123k.pl/" class="f3 fw2 hover-white no-underline white-90 dib">
+      123k.pl
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        POSTS
+      </p>
+      <h1 class="f1 athelas mb1">Build a Coverage Map With Mongodb</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2016-01-02T19:38:06&#43;01:00">January 2, 2016</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
+
+<h1 id="introduction">Introduction</h1>
+
+<p>When I started with my personal bike-track homepage at <a href="https://123k.org">123k.org</a> a few years ago I decided to put all my tracks
+in a MongoDB. The model I use is very simple. I have a class <code>Route</code> which holds meta-data about the track
+and a class <code>TrackPoint</code> which represents a point and has a foreign key to the respective track (of course).
+After some years I have 612827 track-points. So 600k entries is not &lsquo;big-data&rsquo; exactly,
+but it is too much to be displayed on a leaflet map at once. What I really wanted is a &lsquo;Coverage View&rsquo;, which just
+shows me where I&rsquo;ve been with the bike.</p>
+
+<h1 id="the-algorithm">The Algorithm</h1>
+
+<p>As I start all of my rides at my home and eventually return there I have a center where to start the coverage.
+From there I started the following algorithm.</p>
+
+<script type="application/javascript" src="//gist.github.com/efwe/65e28c72c9948da0e9f8.js?file=coverage.rb"></script>
+
+<p>It does 100m steps for 50km and selects all points in the area between min/max distance.</p>
+
+<script type="application/javascript" src="//gist.github.com/efwe/675f2d2d56470933aaa5.js?file=hull_for.rb"></script>
+
+<p>The trick is, that I only consider the points of the <a href="https://en.wikipedia.org/wiki/Convex_hull">convex hull</a>.
+I chose the Jarvis March algorithm as completely described <a href="http://tomswitzer.net/2009/12/jarvis-march/">here</a>.</p>
+
+<p>This is very efficient, most of the points are not considered (A random output of my job is
+<code>calculated hull polygon with 22 points from a total of 2217 points</code>). Finally I only have 12033 points left.
+The resulting points are stored as one document in MongoDB.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby">client <span style="color:#f92672">=</span> <span style="color:#66d9ef">TrackPoint</span><span style="color:#f92672">.</span>mongo_client
+client<span style="color:#f92672">[</span><span style="color:#e6db74">:coverage</span><span style="color:#f92672">].</span>drop()
+client<span style="color:#f92672">[</span><span style="color:#e6db74">:coverage</span><span style="color:#f92672">].</span>insert_one({<span style="color:#e6db74">:points</span> <span style="color:#f92672">=&gt;</span> points})</code></pre></div>
+
+<p>You can see the result of this <a href="https://123k.org/coverage">here</a>.</p>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://123k.pl/" >
+    &copy; 2019 123k.pl
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
