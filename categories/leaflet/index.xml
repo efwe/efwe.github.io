@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on 123k.pl</title>
-    <link>https://123k.pl/posts/</link>
-    <description>Recent content in Posts on 123k.pl</description>
+    <title>Leaflet on 123k.pl</title>
+    <link>https://123k.pl/categories/leaflet/</link>
+    <description>Recent content in Leaflet on 123k.pl</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 07 Jan 2016 09:29:50 +0100</lastBuildDate>
     
-	<atom:link href="https://123k.pl/posts/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://123k.pl/categories/leaflet/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -19,15 +19,6 @@
       <guid>https://123k.pl/posts/2016-01-07-many-clickable-points-on-a-leaflet-map-with-leaflet-glify/</guid>
       <description>#Problem As seen in the post before we collected some 12.000 points which we want to display on a leaflet map. Every attempt to put that many points on one map failed. Firefox completely stopped working, chrome did a little bit better and stayed responsive, but that was not a solution at all.
 #Solution I pretty much tried everything L.geoJSON layer with points and polygons. Where polygons would have been a solution maybe, but you can not tell leaflet to just draw the corners of the polygons.</description>
-    </item>
-    
-    <item>
-      <title>Build a Coverage Map With Mongodb</title>
-      <link>https://123k.pl/posts/build-a-coverage-map-with-mongodb/</link>
-      <pubDate>Sat, 02 Jan 2016 19:38:06 +0100</pubDate>
-      
-      <guid>https://123k.pl/posts/build-a-coverage-map-with-mongodb/</guid>
-      <description>Introduction When I started with my personal bike-track homepage at 123k.org a few years ago I decided to put all my tracks in a MongoDB. The model I use is very simple. I have a class Route which holds meta-data about the track and a class TrackPoint which represents a point and has a foreign key to the respective track (of course). After some years I have 612827 track-points. So 600k entries is not &amp;lsquo;big-data&amp;rsquo; exactly, but it is too much to be displayed on a leaflet map at once.</description>
     </item>
     
     <item>
