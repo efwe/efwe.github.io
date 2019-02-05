@@ -12,13 +12,13 @@
     
     <item>
       <title>Show routes to current geohash</title>
-      <link>https://123k.pl/posts/2016-01-13-show-routes-to-current-geohash/</link>
+      <link>https://123k.pl/posts/show-routes-to-current-geohash/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://123k.pl/posts/2016-01-13-show-routes-to-current-geohash/</guid>
-      <description>#The Plan My geohashing alert-system at 123k.org shows the current geohash for my home graticule. The plan is to the nearest route which passes by.
-#Finding Something As mentioned earlier I have all points i ever visited in a collection. This collection holds a geospatial index. Therefore I can issue mongo queries with the $nearSphere command. This command finds the first points from a given location.
-{% gist efwe/c73ab0d887110156c2f9 first_route.rb %}</description>
+      <guid>https://123k.pl/posts/show-routes-to-current-geohash/</guid>
+      <description>The Plan My geohashing alert-system at 123k.org shows the current geohash for my home graticule. The plan is to the nearest route which passes by.
+Finding Something As mentioned earlier I have all points i ever visited in a collection. This collection holds a geospatial index. Therefore I can issue mongo queries with the $nearSphere command. This command finds the first points from a given location.
+ So this just works.</description>
     </item>
     
   </channel>

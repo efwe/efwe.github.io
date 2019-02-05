@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     
-    <title>123k.pl </title>
+    <title>123k.pl  | Show routes to current geohash</title>
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
 
@@ -27,34 +27,43 @@
     
 
     
-      <link href="https://123k.pl/index.xml" rel="alternate" type="application/rss+xml" title="123k.pl" />
-      <link href="https://123k.pl/index.xml" rel="feed" type="application/rss+xml" title="123k.pl" />
-    
 
-    <meta property="og:title" content="123k.pl" />
-<meta property="og:description" content="umiarkowanie ciekawe rzeczy" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://123k.pl/" />
+    <meta property="og:title" content="Show routes to current geohash" />
+<meta property="og:description" content="The Plan My geohashing alert-system at 123k.org shows the current geohash for my home graticule. The plan is to the nearest route which passes by.
+Finding Something As mentioned earlier I have all points i ever visited in a collection. This collection holds a geospatial index. Therefore I can issue mongo queries with the $nearSphere command. This command finds the first points from a given location.
+ So this just works." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://123k.pl/posts/show-routes-to-current-geohash/" />
 
-<meta property="og:updated_time" content="2016-01-07T09:29:50&#43;01:00"/>
 
-<meta itemprop="name" content="123k.pl">
-<meta itemprop="description" content="umiarkowanie ciekawe rzeczy">
+<meta itemprop="name" content="Show routes to current geohash">
+<meta itemprop="description" content="The Plan My geohashing alert-system at 123k.org shows the current geohash for my home graticule. The plan is to the nearest route which passes by.
+Finding Something As mentioned earlier I have all points i ever visited in a collection. This collection holds a geospatial index. Therefore I can issue mongo queries with the $nearSphere command. This command finds the first points from a given location.
+ So this just works.">
 
+
+
+<meta itemprop="wordCount" content="357">
+
+
+
+<meta itemprop="keywords" content="" />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="123k.pl"/>
-<meta name="twitter:description" content="umiarkowanie ciekawe rzeczy"/>
+<meta name="twitter:title" content="Show routes to current geohash"/>
+<meta name="twitter:description" content="The Plan My geohashing alert-system at 123k.org shows the current geohash for my home graticule. The plan is to the nearest route which passes by.
+Finding Something As mentioned earlier I have all points i ever visited in a collection. This collection holds a geospatial index. Therefore I can issue mongo queries with the $nearSphere command. This command finds the first points from a given location.
+ So this just works."/>
 
   </head>
 
   <body class="ma0 avenir bg-near-white">
 
     
+   
+  
 
-  
-  
-  <header class="cover bg-top" style="background-image: url('https://123k.pl/images/IMG_1643.JPG');">
-    <div class="bg-black-60">
+  <header>
+    <div class="bg-dark-gray">
       <nav class="pv3 ph3 ph4-ns" role="navigation">
   <div class="flex-l justify-between items-center center">
     <a href="https://123k.pl" class="f3 fw2 hover-white no-underline white-90 dib">
@@ -112,116 +121,113 @@
   </div>
 </nav>
 
-      <div class="tc-l pv4 pv6-l ph3 ph4-ns">
-        <h1 class="f2 f-subheadline-l fw2 white-90 mb0 lh-title">
-          123k.pl
-        </h1>
-        
-      </div>
     </div>
   </header>
 
 
+
     <main class="pb7" role="main">
       
-  <article class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy mid-gray">
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        POSTS
+      </p>
+      <h1 class="f1 athelas mb1">Show routes to current geohash</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="0001-01-01T00:00:00Z">January 1, 0001</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
+
+<h1 id="the-plan">The Plan</h1>
+
+<p>My geohashing alert-system at <a href="https://123k.org/geohashing">123k.org</a> shows the current <a href="http://wiki.xkcd.com/geohashing/">geohash</a> for my home <a href="https://en.wikipedia.org/wiki/Geographic_coordinate_system">graticule</a>. The plan is to the nearest route which passes by.</p>
+
+<h1 id="finding-something">Finding Something</h1>
+
+<p>As mentioned <a href="https://123k.pl/posts/build-a-coverage-map-with-mongodb/">earlier</a> I have all points i ever visited in a collection.
+This collection holds a <a href="https://docs.mongodb.org/manual/applications/geospatial-indexes/">geospatial index</a>. Therefore I can issue mongo queries with
+the <code>$nearSphere</code> command. This command finds the first points from a given location.</p>
+
+<script type="application/javascript" src="//gist.github.com/efwe/c73ab0d887110156c2f9.js?file=first_route.rb"></script>
+
+<p>So this just works. But what about other routes which may also be nice and just around the corner?
+We can select many points around the hash point and check which routes they&rsquo;re on.</p>
+
+<script type="application/javascript" src="//gist.github.com/efwe/dfc73a236cfc94ef3313.js?file=routes_to.rb"></script>
+
+<p>The trick here is that we have a implicit <code>distinct</code> by grouping the points according to their route-id. So we really find
+every route within 5km just once.</p>
+
+<p>So this also works, but it is not 100% predictable <em>how many</em> routes we really find. If the point sits just around the corner,
+this algorithm will find tons of routes which then are all queried and displayed. Also not useful. I&rsquo;ll have to invent a custom
+<code>limit</code> here. Or I find a solution to limit the results of the aggregation run - this is just open now.</p>
+
+<p>I think I&rsquo;ll stick with the first approach as it nicely stops finding things after the first point and as nobody really
+uses my site anyways I provide the second approach via button click.</p>
+
+<h1 id="showing-the-routes">Showing The Routes</h1>
+
+<p>Showing the routes is dead easy again. We just fetch some geo-json and add it to the map:</p>
+
+<script type="application/javascript" src="//gist.github.com/efwe/c78ad24bad8368412b4f.js?file=show_routes.coffee"></script>
+
+<p>As my geohashing page shows the whole graticule, but my bike-rides just cover some 20km radius I only display the
+route when the point sits within 35km of my home. So we need a distance calculation. This is again easy as leaflet just provides
+this.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-coffee-script" data-lang="coffee-script"><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">L</span>.<span style="color:#a6e22e">latLng</span>(<span style="color:#a6e22e">@location</span>.<span style="color:#a6e22e">lat</span>, <span style="color:#a6e22e">@location</span>.<span style="color:#a6e22e">lon</span>).<span style="color:#a6e22e">distanceTo</span>(<span style="color:#a6e22e">L</span>.<span style="color:#a6e22e">latLng</span>(<span style="color:#a6e22e">lat</span>, <span style="color:#a6e22e">lon</span>)) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">35000</span>
+  <span style="color:#a6e22e">@firstRouteToPoint</span>([<span style="color:#a6e22e">lon</span>, <span style="color:#a6e22e">lat</span>])</code></pre></div>
+
+<p>As this feature is not visible every day I took a screenshot for reference. You can see, that the additional routes are not
+100% useful, especially because they are not clickable yet. But this is another feature.</p>
+
+<p><img src="/images/displayed_routes.png" alt="displayed routes" /></p>
+
+<p>The first route is not so bad. It looks good but is also not clickable yet.</p>
+
+<p><img src="/images/first_route.png" alt="first" /></p>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6">
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
     
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "123k" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
   </article>
-  
-  
-  
-  
-  
-  
-  
-    
-    
-
-    <div class="pa3 pa4-ns w-100 w-70-ns center">
-      
-       
-          <h1 class="flex-none">
-            Recent Posts
-          </h1>
-        
-
-      
-
-      <section class="w-100 mw8">
-        
-        
-          <div class="relative w-100 mb4">
-            
-<article class="bb b--black-10">
-  <div class="db pv4 ph3 ph0-l no-underline dark-gray">
-    <div class="flex flex-column flex-row-ns">
-      
-      <div class="blah w-100">
-        <h1 class="f3 fw1 athelas mt0 lh-title">
-          <a href="/posts/many-clickable-points-on-a-leaflet-map-with-leaflet-glify/" class="color-inherit dim link">
-            Many Clickable Points on a Leaflet Map With Leaflet.glify
-            </a>
-        </h1>
-        <div class="f6 f5-l lh-copy nested-copy-line-height nested-links">
-          Problem As seen in the post before we collected some 12.000 points which we want to display on a leaflet map. Every attempt to put that many points on one map failed. Firefox completely stopped working, chrome did a little bit better and stayed responsive, but that was not a solution at all.
-Solution I pretty much tried everything L.geoJSON layer with points and polygons. Where polygons would have been a solution maybe, but you can not tell leaflet to just draw the corners of the polygons.
-        </div>
-          <a href="/posts/many-clickable-points-on-a-leaflet-map-with-leaflet-glify/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
-        
-      </div>
-    </div>
-  </div>
-</article>
-
-          </div>
-        
-          <div class="relative w-100 mb4">
-            
-<article class="bb b--black-10">
-  <div class="db pv4 ph3 ph0-l no-underline dark-gray">
-    <div class="flex flex-column flex-row-ns">
-      
-      <div class="blah w-100">
-        <h1 class="f3 fw1 athelas mt0 lh-title">
-          <a href="/posts/build-a-coverage-map-with-mongodb/" class="color-inherit dim link">
-            Build a Coverage Map With Mongodb
-            </a>
-        </h1>
-        <div class="f6 f5-l lh-copy nested-copy-line-height nested-links">
-          Introduction When I started with my personal bike-track homepage at 123k.org a few years ago I decided to put all my tracks in a MongoDB. The model I use is very simple. I have a class Route which holds meta-data about the track and a class TrackPoint which represents a point and has a foreign key to the respective track (of course). After some years I have 612827 track-points. So 600k entries is not &lsquo;big-data&rsquo; exactly, but it is too much to be displayed on a leaflet map at once.
-        </div>
-          <a href="/posts/build-a-coverage-map-with-mongodb/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
-        
-      </div>
-    </div>
-  </div>
-</article>
-
-          </div>
-        
-      </section>
-
-      
-      <section class="w-100">
-        <h1 class="f3">More</h1>
-        
-        
-          <h2 class="f5 fw4 mb4 dib mr3">
-            <a href="/posts/show-routes-to-current-geohash/" class="link black dim">
-              Show routes to current geohash
-            </a>
-          </h2>
-        
-
-        
-        
-          <a href="/posts/" class="link db f6 pa2 br3 bg-mid-gray white dim w4 tc">All Posts</a>
-        
-        </section>
-      
-
-      </div>
-  
 
     </main>
     <footer class="bg-dark-gray bottom-0 w-100 pa3" role="contentinfo">

@@ -13,12 +13,12 @@
     
     <item>
       <title>Many Clickable Points on a Leaflet Map With Leaflet.glify</title>
-      <link>https://123k.pl/posts/2016-01-07-many-clickable-points-on-a-leaflet-map-with-leaflet-glify/</link>
+      <link>https://123k.pl/posts/many-clickable-points-on-a-leaflet-map-with-leaflet-glify/</link>
       <pubDate>Thu, 07 Jan 2016 09:29:50 +0100</pubDate>
       
-      <guid>https://123k.pl/posts/2016-01-07-many-clickable-points-on-a-leaflet-map-with-leaflet-glify/</guid>
-      <description>#Problem As seen in the post before we collected some 12.000 points which we want to display on a leaflet map. Every attempt to put that many points on one map failed. Firefox completely stopped working, chrome did a little bit better and stayed responsive, but that was not a solution at all.
-#Solution I pretty much tried everything L.geoJSON layer with points and polygons. Where polygons would have been a solution maybe, but you can not tell leaflet to just draw the corners of the polygons.</description>
+      <guid>https://123k.pl/posts/many-clickable-points-on-a-leaflet-map-with-leaflet-glify/</guid>
+      <description>Problem As seen in the post before we collected some 12.000 points which we want to display on a leaflet map. Every attempt to put that many points on one map failed. Firefox completely stopped working, chrome did a little bit better and stayed responsive, but that was not a solution at all.
+Solution I pretty much tried everything L.geoJSON layer with points and polygons. Where polygons would have been a solution maybe, but you can not tell leaflet to just draw the corners of the polygons.</description>
     </item>
     
     <item>
@@ -32,13 +32,22 @@
     
     <item>
       <title>Show routes to current geohash</title>
-      <link>https://123k.pl/posts/2016-01-13-show-routes-to-current-geohash/</link>
+      <link>https://123k.pl/posts/show-routes-to-current-geohash/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://123k.pl/posts/2016-01-13-show-routes-to-current-geohash/</guid>
-      <description>#The Plan My geohashing alert-system at 123k.org shows the current geohash for my home graticule. The plan is to the nearest route which passes by.
-#Finding Something As mentioned earlier I have all points i ever visited in a collection. This collection holds a geospatial index. Therefore I can issue mongo queries with the $nearSphere command. This command finds the first points from a given location.
-{% gist efwe/c73ab0d887110156c2f9 first_route.rb %}</description>
+      <guid>https://123k.pl/posts/show-routes-to-current-geohash/</guid>
+      <description>The Plan My geohashing alert-system at 123k.org shows the current geohash for my home graticule. The plan is to the nearest route which passes by.
+Finding Something As mentioned earlier I have all points i ever visited in a collection. This collection holds a geospatial index. Therefore I can issue mongo queries with the $nearSphere command. This command finds the first points from a given location.
+ So this just works.</description>
+    </item>
+    
+    <item>
+      <title>fw@123k.org</title>
+      <link>https://123k.pl/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://123k.pl/about/</guid>
+      <description>Welcome to my personal blog. I&amp;rsquo;m Frank Waldheim. I work full-time as a husband and as a dad for my daughter. Other family members are a dog, a cat and a tortoise. I live in Poland, working remotely as a senior software engineer for EMPIC GmbH. When I managed family and work I try to ride my bicycles.</description>
     </item>
     
   </channel>
