@@ -30,7 +30,7 @@
 
     <meta property="og:title" content="Streaming Geo-Locations" />
 <meta property="og:description" content="Streaming Server Experiments My first tests with streaming geo-locations from mongodb to a webclient started. The results are pretty promising and I even have two calls in production already.
-Mosty - Spring-Boot Webflux My first try will be a Spring-Boot application named Mosty (which is of course a small village nearby and home of the infamous sandpit). The result for now is basically a copy and paste from tutorials and stack-overflow - but it just work and the first stream of points is already consumed by my new static homepage." />
+Mosty - Spring-Boot Webflux My first try will be a Spring-Boot application named Mosty (which is of course a small village nearby and home of the infamous sandpit). The result for now is basically a copy and paste from tutorials and stack-overflow - but it just works and the first stream of points is already consumed by my new static homepage." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://123k.pl/posts/geo-location-sse-stream/" />
 <meta property="article:published_time" content="2019-02-24T10:43:07&#43;01:00"/>
@@ -38,12 +38,12 @@ Mosty - Spring-Boot Webflux My first try will be a Spring-Boot application named
 
 <meta itemprop="name" content="Streaming Geo-Locations">
 <meta itemprop="description" content="Streaming Server Experiments My first tests with streaming geo-locations from mongodb to a webclient started. The results are pretty promising and I even have two calls in production already.
-Mosty - Spring-Boot Webflux My first try will be a Spring-Boot application named Mosty (which is of course a small village nearby and home of the infamous sandpit). The result for now is basically a copy and paste from tutorials and stack-overflow - but it just work and the first stream of points is already consumed by my new static homepage.">
+Mosty - Spring-Boot Webflux My first try will be a Spring-Boot application named Mosty (which is of course a small village nearby and home of the infamous sandpit). The result for now is basically a copy and paste from tutorials and stack-overflow - but it just works and the first stream of points is already consumed by my new static homepage.">
 
 
 <meta itemprop="datePublished" content="2019-02-24T10:43:07&#43;01:00" />
 <meta itemprop="dateModified" content="2019-02-24T10:43:07&#43;01:00" />
-<meta itemprop="wordCount" content="629">
+<meta itemprop="wordCount" content="698">
 
 
 
@@ -51,7 +51,7 @@ Mosty - Spring-Boot Webflux My first try will be a Spring-Boot application named
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Streaming Geo-Locations"/>
 <meta name="twitter:description" content="Streaming Server Experiments My first tests with streaming geo-locations from mongodb to a webclient started. The results are pretty promising and I even have two calls in production already.
-Mosty - Spring-Boot Webflux My first try will be a Spring-Boot application named Mosty (which is of course a small village nearby and home of the infamous sandpit). The result for now is basically a copy and paste from tutorials and stack-overflow - but it just work and the first stream of points is already consumed by my new static homepage."/>
+Mosty - Spring-Boot Webflux My first try will be a Spring-Boot application named Mosty (which is of course a small village nearby and home of the infamous sandpit). The result for now is basically a copy and paste from tutorials and stack-overflow - but it just works and the first stream of points is already consumed by my new static homepage."/>
 
   </head>
 
@@ -153,8 +153,10 @@ have two calls in production already.</p>
 
 <p>My first try will be a Spring-Boot application named <a href="https://github.com/efwe/mosty">Mosty</a>
 (which is of course a small <a href="https://goo.gl/maps/38TGkXUfZNM2">village</a> nearby and home of the infamous sandpit).
-The result for now is basically a copy and paste from tutorials and stack-overflow - but it just work and the first
-stream of points is already consumed by my new static homepage.</p>
+The result for now is basically a copy and paste from tutorials and stack-overflow - but it just works and the first
+stream of points is already consumed by my <a href="https://123k.work">new static homepage</a>.</p>
+
+<p>I was able to stream geo-locations as SSE:</p>
 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">    @CrossOrigin
     @GetMapping(value =<span style="color:#a6e22e"> [&#34;/track/{id}/point-stream&#34;]</span>, produces =<span style="color:#a6e22e"> [MediaType.TEXT_EVENT_STREAM_VALUE]</span>)
@@ -171,24 +173,28 @@ stream of points is already consumed by my new static homepage.</p>
 
     }</code></pre></div>
 
-<p>I was able to stream geo-locations and I even prepared a &lsquo;legacy&rsquo; version of the same call, which collects all the data
-on server side before sending it out. This call is even in production while switching tracks on the frontpage of 123k.org.</p>
+<p>And I prepared a &lsquo;legacy&rsquo; version of the same call, which collects all the data
+on server side before sending it out. This call is even in production while switching tracks on the front page of <a href="https://123k.org">123k.org</a>.</p>
 
-<p>And I think I have to follow that path because of the Kotlin language, which I may should learn for future use.</p>
+<p>I think, I will  have to follow that path because of the Kotlin language. It would be a good thing to learn for
+the future. Especially in combination with the Spring-Boot framework - you can really feel, that they put a lot of effort in
+the integration there. It&rsquo;s not just that you use java API from another language - it really &lsquo;feels&rsquo; differently.</p>
 
 <h2 id="choiny-handrolled-go">Choiny - Handrolled Go</h2>
 
-<p>The second one I started is a Go version of the same service name <a href="https://github.com/efwe/choiny">Choiny</a> (which is
-of course the even smaller <a href="https://goo.gl/maps/pR78PZjGTcL2">village</a> and a popular path to the east for me).
-This one can not do too much right now - only one mongo query and playback. Nothing from this is in production here.
-The plan is to provide the same API as Mosty does and compare the programming model, performance (Not really - bot streaming servers
- will be blazing fast for me) and everything in between. But this is a very ambitious goal - so for now I want to implement one or
- two requests to see how things are going. Especially because this language is also completely new - and I leave the sweet spot
- of the JDK eco-system the first time in 15 years :)</p>
+<p>The second one I started is a Go version of the same service which is named <a href="https://github.com/efwe/choiny">Choiny</a> (an even smaller <a href="https://goo.gl/maps/pR78PZjGTcL2">village</a> and a popular path to the east for me).</p>
+
+<p>This one can not do too much right now - only one MongoDB query and playback. Nothing from this is in production yet.
+The plan is to provide the same API as Mosty does and compare the programming model, performance (Not really - I do not
+think, that I can seriously measure something here) and everything in between.</p>
+
+<p>Overall this is a very ambitious goal - so for now I just want to play around with a new language and
+ as the the official <a href="https://github.com/mongodb/mongo-go-driver">MongoDB Go Driver</a> is
+ reaching 1.0.0 soon this is a very good time to start with.</p>
 
 <h1 id="relocate-everything-to-hetzner-cloud">Relocate everything to Hetzner Cloud</h1>
 
-<p>Because of the fact, that I want to put a JVM service into production for the first time in years I decided to split my setup up.
+<p>Because of the fact, that I want to put a JVM service into production for the first time in years I decided <sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup> to split my setup up.
 Instead of one freeBSD box which does everything, I know have two servers.</p>
 
 <h2 id="tontu-123k-org">tontu.123k.org</h2>
@@ -196,21 +202,26 @@ Instead of one freeBSD box which does everything, I know have two servers.</p>
 <p><a href="http://tontu.123k.org">Tontu</a> is the freeBSD frontend server which hosts the static website for <a href="https://123k.work">123k.work</a> and
 the rails installation for <a href="https://123k.org">123k.org</a>.</p>
 
-<h2 id="hilda-123k-org-a-k-a-map-123k-org">hilda.123k.org a.k.a map.123k.org</h2>
+<h2 id="hilda-123k-org">hilda.123k.org</h2>
 
 <p><a href="http://hilda.123k.org">Hilda</a> is the Ubuntu Linux backend server which hosts the mongodb and the JVM service. It is referenced
 as <a href="https://map.123k.org">https://map.123k.org</a> from the frontend. The mongodb is still unsecured but listens on a public IP know -
 medium good idea as we learned in the past. For now I limit access via a firewall rule, but this is not optimal.</p>
 
-<h1 id="outlook-stream-consumers-sse-vs-websockets">Outlook Stream Consumers - SSE vs. Websockets</h1>
+<h1 id="stream-consumers-sse-vs-websockets">Stream Consumers - SSE vs. Websockets</h1>
 
 <p>All of the tutorials for Spring-Boot-Webflux somehow ended with a pointer to Websockets.
-So as I have already experience with Websockets and I do not plan to use the main features of (full-duplex messaging, long-time-listening where events come late
-after hours) I was not convinced. I just want to answer one request, with a little bit more result-data than usual so that it would be a good
+So as I have already experience with Websockets and I do not plan to use the main features of them (full-duplex messaging, long-time-listening where events come late
+after hours).</p>
+
+<p>I just want to answer one request, with a little bit more result-data than usual so that it would be a good
 idea to <em>not</em> buffer that stuff on the server but start streaming immediately.</p>
 
 <p>Because of this I stepped back to SSE - Server Send Events. From a Server point of view, they where really easy to generate.
-But on the client the programming model feels a little bit strange. But for now it is a start.</p>
+But on the client the programming model feels a little bit rough. So the main plan is to use Stackoverflow again
+and <a href="https://stackoverflow.com/questions/36827270/creating-an-rxjs-observable-from-a-server-sent-eventsource">create an Observable for an EventSource stream</a>.</p>
+
+<p>But for now we will have something like this:</p>
 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-coffee-script" data-lang="coffee-script">switchTrack: <span style="color:#a6e22e">(id) -&gt;</span>
   <span style="color:#a6e22e">@trackLayer</span>.<span style="color:#a6e22e">clearLayers</span>()
@@ -230,6 +241,15 @@ But on the client the programming model feels a little bit strange. But for now 
   <span style="color:#a6e22e">eventSource</span>.<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#39;point&#39;</span>, <span style="color:#a6e22e">pointEventHandler</span>, <span style="color:#66d9ef">false</span>)</code></pre></div>
 
 <p>You can find the first test-results on my new static site <a href="https://123k.work">123k.work</a>.</p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1">Actually I was forced to use Linux, because the Java 11 port for freeBSD is not 100% ready yet.
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+</ol>
+</div>
 <ul class="pa0">
   
 </ul>
