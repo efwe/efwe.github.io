@@ -6,10 +6,20 @@
     <description>Recent content on 123k.pl</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 09 Feb 2019 19:42:54 +0100</lastBuildDate>
+    <lastBuildDate>Sun, 24 Feb 2019 10:43:07 +0100</lastBuildDate>
     
 	<atom:link href="https://123k.pl/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Streaming Geo-Locations</title>
+      <link>https://123k.pl/posts/geo-location-sse-stream/</link>
+      <pubDate>Sun, 24 Feb 2019 10:43:07 +0100</pubDate>
+      
+      <guid>https://123k.pl/posts/geo-location-sse-stream/</guid>
+      <description>Streaming Server Experiments My first tests with streaming geo-locations from mongodb to a webclient started. The results are pretty promising and I even have two calls in production already.
+Mosty - Spring-Boot Webflux My first try will be a Spring-Boot application named Mosty (which is of course a small village nearby and home of the infamous sandpit). The result for now is basically a copy and paste from tutorials and stack-overflow - but it just work and the first stream of points is already consumed by my new static homepage.</description>
+    </item>
     
     <item>
       <title>New Year New Start</title>
