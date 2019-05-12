@@ -6,10 +6,20 @@
     <description>Recent content on 123k.pl</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 24 Feb 2019 10:43:07 +0100</lastBuildDate>
+    <lastBuildDate>Sun, 12 May 2019 15:48:38 +0200</lastBuildDate>
     
 	<atom:link href="https://123k.pl/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Reactivated Obelometer</title>
+      <link>https://123k.pl/posts/reactivated-obelometer/</link>
+      <pubDate>Sun, 12 May 2019 15:48:38 +0200</pubDate>
+      
+      <guid>https://123k.pl/posts/reactivated-obelometer/</guid>
+      <description>Welcome Back Obelometer A few years ago I bought my first few raspberries and the first thing I invented was (of course) a thermometer application. Back then I even stored the data in MongoDB and calculated stuff with map-reduce - but as one rpi died and the host server also was re-installed I never looked back.
+During my recent rebuild of the home-office I found some old rpis and even the thermometer and the wireless sticks.</description>
+    </item>
     
     <item>
       <title>Streaming Geo-Locations</title>
