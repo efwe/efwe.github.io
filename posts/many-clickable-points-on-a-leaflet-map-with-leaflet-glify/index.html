@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.55.5" />
+    <meta name="generator" content="Hugo 0.79.0" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -33,16 +33,13 @@
 Solution I pretty much tried everything L.geoJSON layer with points and polygons. Where polygons would have been a solution maybe, but you can not tell leaflet to just draw the corners of the polygons." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://123k.pl/posts/many-clickable-points-on-a-leaflet-map-with-leaflet-glify/" />
-<meta property="article:published_time" content="2016-01-07T09:29:50&#43;01:00"/>
-<meta property="article:modified_time" content="2016-01-07T09:29:50&#43;01:00"/>
-
+<meta property="article:published_time" content="2016-01-07T09:29:50+01:00" />
+<meta property="article:modified_time" content="2016-01-07T09:29:50+01:00" />
 <meta itemprop="name" content="Many Clickable Points on a Leaflet Map With Leaflet.glify">
 <meta itemprop="description" content="Problem As seen in the post before we collected some 12.000 points which we want to display on a leaflet map. Every attempt to put that many points on one map failed. Firefox completely stopped working, chrome did a little bit better and stayed responsive, but that was not a solution at all.
 Solution I pretty much tried everything L.geoJSON layer with points and polygons. Where polygons would have been a solution maybe, but you can not tell leaflet to just draw the corners of the polygons.">
-
-
-<meta itemprop="datePublished" content="2016-01-07T09:29:50&#43;01:00" />
-<meta itemprop="dateModified" content="2016-01-07T09:29:50&#43;01:00" />
+<meta itemprop="datePublished" content="2016-01-07T09:29:50+01:00" />
+<meta itemprop="dateModified" content="2016-01-07T09:29:50+01:00" />
 <meta itemprop="wordCount" content="246">
 
 
@@ -142,37 +139,27 @@ Solution I pretty much tried everything L.geoJSON layer with points and polygons
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
-
-<h1 id="problem">Problem</h1>
-
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h1 id="problem">Problem</h1>
 <p>As seen in the <a href="https://123k.pl/posts/build-a-coverage-map-with-mongodb/">post before</a>
 we collected some 12.000 points which we want to display on a leaflet map.
 Every attempt to put that many points on one map failed. Firefox completely stopped working, chrome did
 a  little bit better and stayed responsive, but that was not a solution at all.</p>
-
 <h1 id="solution">Solution</h1>
-
 <p>I pretty much tried everything <code>L.geoJSON</code> layer with points and polygons.
 Where polygons would have been a solution maybe, but you can not tell leaflet to just draw the corners of the polygons.
 So I needed something else. In the <code>#leaflet</code> on freenode i was pointed to the
 <a href="http://robertleeplummerjr.github.io/Leaflet.glify/">Leaflet.glify</a> project.</p>
-
 <p>As I understood, there is a leaflet layer which provides a HTML5 canvas. The location of the points on the canvas is
 calculated based on the GPS coordinates (points2pixel) and then are rendered on the canvas with some WebGL point shapes.</p>
-
 <p>So far so good. The best part is, that the lib holds an index about every rendered point and so can respond to clicks.
 As it is not easy to really hit a special point there is even a &lsquo;find nearest point&rsquo; algorithm in place so that you almost
 always get a point clicked.</p>
-
 <p>The actual code to use the plugin is a one-liner.</p>
-
-<script type="application/javascript" src="//gist.github.com/efwe/683e7db0c4c22f5a52d4.js?file=add_coverage.coffee"></script>
+<script type="application/javascript" src="https://gist.github.com/efwe/683e7db0c4c22f5a52d4.js?file=add_coverage.coffee"></script>
 
 <p>Here&rsquo;s the callback I use when a point is clicked. Interesting detail. You should call <code>L.DomEvent.stopPropagation(event)</code> to
 stop the event handling if you have other click-backs registered on your map.</p>
-
-<script type="application/javascript" src="//gist.github.com/efwe/28c03b9c10c15cfda165.js?file=point_clicked.coffee"></script>
+<script type="application/javascript" src="https://gist.github.com/efwe/28c03b9c10c15cfda165.js?file=point_clicked.coffee"></script>
 
 <p>You can see the result at <a href="https://123k.org/coverage">https://123k.org/coverage</a>.</p>
 <ul class="pa0">
@@ -215,7 +202,7 @@ stop the event handling if you have other click-backs registered on your map.</p
     <footer class="bg-dark-gray bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://123k.pl" >
-    &copy; 2019 123k.pl
+    &copy; 2020 123k.pl
   </a>
     <div>
 

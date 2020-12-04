@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.55.5" />
+    <meta name="generator" content="Hugo 0.79.0" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -35,13 +35,10 @@ Finding Something As mentioned earlier I have all points i ever visited in a col
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://123k.pl/posts/show-routes-to-current-geohash/" />
 
-
 <meta itemprop="name" content="Show routes to current geohash">
 <meta itemprop="description" content="The Plan My geohashing alert2016-01-13 15:28-system at 123k.org shows the current geohash for my home graticule. The plan is to the nearest route which passes by.
 Finding Something As mentioned earlier I have all points i ever visited in a collection. This collection holds a geospatial index. Therefore I can issue mongo queries with the $nearSphere command. This command finds the first points from a given location.
  So this just works.">
-
-
 
 <meta itemprop="wordCount" content="358">
 
@@ -143,56 +140,39 @@ Finding Something As mentioned earlier I have all points i ever visited in a col
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
-
-<h1 id="the-plan">The Plan</h1>
-
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h1 id="the-plan">The Plan</h1>
 <p>My geohashing alert2016-01-13 15:28-system at <a href="https://123k.org/geohashing">123k.org</a> shows the current <a href="http://wiki.xkcd.com/geohashing/">geohash</a> for my home <a href="https://en.wikipedia.org/wiki/Geographic_coordinate_system">graticule</a>. The plan is to the nearest route which passes by.</p>
-
 <h1 id="finding-something">Finding Something</h1>
-
 <p>As mentioned <a href="https://123k.pl/posts/build-a-coverage-map-with-mongodb/">earlier</a> I have all points i ever visited in a collection.
 This collection holds a <a href="https://docs.mongodb.org/manual/applications/geospatial-indexes/">geospatial index</a>. Therefore I can issue mongo queries with
 the <code>$nearSphere</code> command. This command finds the first points from a given location.</p>
-
-<script type="application/javascript" src="//gist.github.com/efwe/c73ab0d887110156c2f9.js?file=first_route.rb"></script>
+<script type="application/javascript" src="https://gist.github.com/efwe/c73ab0d887110156c2f9.js?file=first_route.rb"></script>
 
 <p>So this just works. But what about other routes which may also be nice and just around the corner?
 We can select many points around the hash point and check which routes they&rsquo;re on.</p>
-
-<script type="application/javascript" src="//gist.github.com/efwe/dfc73a236cfc94ef3313.js?file=routes_to.rb"></script>
+<script type="application/javascript" src="https://gist.github.com/efwe/dfc73a236cfc94ef3313.js?file=routes_to.rb"></script>
 
 <p>The trick here is that we have a implicit <code>distinct</code> by grouping the points according to their route-id. So we really find
 every route within 5km just once.</p>
-
 <p>So this also works, but it is not 100% predictable <em>how many</em> routes we really find. If the point sits just around the corner,
 this algorithm will find tons of routes which then are all queried and displayed. Also not useful. I&rsquo;ll have to invent a custom
 <code>limit</code> here. Or I find a solution to limit the results of the aggregation run - this is just open now.</p>
-
 <p>I think I&rsquo;ll stick with the first approach as it nicely stops finding things after the first point and as nobody really
 uses my site anyways I provide the second approach via button click.</p>
-
 <h1 id="showing-the-routes">Showing The Routes</h1>
-
 <p>Showing the routes is dead easy again. We just fetch some geo-json and add it to the map:</p>
-
-<script type="application/javascript" src="//gist.github.com/efwe/c78ad24bad8368412b4f.js?file=show_routes.coffee"></script>
+<script type="application/javascript" src="https://gist.github.com/efwe/c78ad24bad8368412b4f.js?file=show_routes.coffee"></script>
 
 <p>As my geohashing page shows the whole graticule, but my bike-rides just cover some 20km radius I only display the
 route when the point sits within 35km of my home. So we need a distance calculation. This is again easy as leaflet just provides
 this.</p>
-
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-coffee-script" data-lang="coffee-script"><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">L</span>.<span style="color:#a6e22e">latLng</span>(<span style="color:#a6e22e">@location</span>.<span style="color:#a6e22e">lat</span>, <span style="color:#a6e22e">@location</span>.<span style="color:#a6e22e">lon</span>).<span style="color:#a6e22e">distanceTo</span>(<span style="color:#a6e22e">L</span>.<span style="color:#a6e22e">latLng</span>(<span style="color:#a6e22e">lat</span>, <span style="color:#a6e22e">lon</span>)) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">35000</span>
   <span style="color:#a6e22e">@firstRouteToPoint</span>([<span style="color:#a6e22e">lon</span>, <span style="color:#a6e22e">lat</span>])</code></pre></div>
-
 <p>As this feature is not visible every day I took a screenshot for reference. You can see, that the additional routes are not
 100% useful, especially because they are not clickable yet. But this is another feature.</p>
-
-<p><img src="/images/displayed_routes.png" alt="displayed routes" /></p>
-
+<p><img src="/images/displayed_routes.png" alt="displayed routes"></p>
 <p>The first route is not so bad. It looks good but is also not clickable yet.</p>
-
-<p><img src="/images/first_route.png" alt="first" /></p>
+<p><img src="/images/first_route.png" alt="first"></p>
 <ul class="pa0">
   
 </ul>
@@ -233,7 +213,7 @@ this.</p>
     <footer class="bg-dark-gray bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://123k.pl" >
-    &copy; 2019 123k.pl
+    &copy; 2020 123k.pl
   </a>
     <div>
 

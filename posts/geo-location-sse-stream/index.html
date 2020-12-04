@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.55.5" />
+    <meta name="generator" content="Hugo 0.79.0" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -33,17 +33,14 @@
 Mosty - Spring-Boot Webflux My first try will be a Spring-Boot application named Mosty (which is of course a small village nearby and home of the infamous sandpit). The result for now is basically a copy and paste from tutorials and stack-overflow - but it just works and the first stream of points is already consumed by my new static homepage." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://123k.pl/posts/geo-location-sse-stream/" />
-<meta property="article:published_time" content="2019-02-24T10:43:07&#43;01:00"/>
-<meta property="article:modified_time" content="2019-02-24T10:43:07&#43;01:00"/>
-
+<meta property="article:published_time" content="2019-02-24T10:43:07+01:00" />
+<meta property="article:modified_time" content="2019-02-24T10:43:07+01:00" />
 <meta itemprop="name" content="Streaming Geo-Locations">
 <meta itemprop="description" content="Streaming Server Experiments My first tests with streaming geo-locations from mongodb to a webclient started. The results are pretty promising and I even have two calls in production already.
 Mosty - Spring-Boot Webflux My first try will be a Spring-Boot application named Mosty (which is of course a small village nearby and home of the infamous sandpit). The result for now is basically a copy and paste from tutorials and stack-overflow - but it just works and the first stream of points is already consumed by my new static homepage.">
-
-
-<meta itemprop="datePublished" content="2019-02-24T10:43:07&#43;01:00" />
-<meta itemprop="dateModified" content="2019-02-24T10:43:07&#43;01:00" />
-<meta itemprop="wordCount" content="794">
+<meta itemprop="datePublished" content="2019-02-24T10:43:07+01:00" />
+<meta itemprop="dateModified" content="2019-02-24T10:43:07+01:00" />
+<meta itemprop="wordCount" content="796">
 
 
 
@@ -142,28 +139,21 @@ Mosty - Spring-Boot Webflux My first try will be a Spring-Boot application named
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
-
-<h1 id="streaming-server-experiments">Streaming Server Experiments</h1>
-
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h1 id="streaming-server-experiments">Streaming Server Experiments</h1>
 <p>My first tests with streaming geo-locations from mongodb to a webclient started. The results are pretty promising and I even
 have two calls in production already.</p>
-
-<h2 id="mosty-spring-boot-webflux">Mosty - Spring-Boot Webflux</h2>
-
+<h2 id="mosty---spring-boot-webflux">Mosty - Spring-Boot Webflux</h2>
 <p>My first try will be a Spring-Boot application named <a href="https://github.com/efwe/mosty">Mosty</a>
 (which is of course a small <a href="https://goo.gl/maps/38TGkXUfZNM2">village</a> nearby and home of the infamous sandpit).
 The result for now is basically a copy and paste from tutorials and stack-overflow - but it just works and the first
 stream of points is already consumed by my <a href="https://123k.work">new static homepage</a>.</p>
-
 <p>I was able to stream geo-locations as SSE:</p>
-
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">    @CrossOrigin
-    @GetMapping(value =<span style="color:#a6e22e"> [&#34;/track/{id}/point-stream&#34;]</span>, produces =<span style="color:#a6e22e"> [MediaType.TEXT_EVENT_STREAM_VALUE]</span>)
-    @ResponseBody
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">trackPointStream</span>(@PathVariable(<span style="color:#e6db74">&#34;id&#34;</span>) trackId: String): Flux&lt;ServerSentEvent&lt;TrackPoint&gt;&gt; {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">    <span style="color:#a6e22e">@CrossOrigin</span>
+    <span style="color:#a6e22e">@GetMapping</span>(value = [<span style="color:#e6db74">&#34;/track/{id}/point-stream&#34;</span>], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
+    <span style="color:#a6e22e">@ResponseBody</span>
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">trackPointStream</span>(<span style="color:#a6e22e">@PathVariable</span>(<span style="color:#e6db74">&#34;id&#34;</span>) trackId: String): Flux&lt;ServerSentEvent&lt;TrackPoint&gt;&gt; {
         <span style="color:#66d9ef">return</span> trackPointRepository.findByTrackId(ObjectId(trackId))
-                .map { point: TrackPoint -&gt;
+                .map { point: TrackPoint <span style="color:#f92672">-&gt;</span>
                     ServerSentEvent
                             .builder&lt;TrackPoint&gt;()
                             .<span style="color:#66d9ef">data</span>(point)
@@ -172,63 +162,43 @@ stream of points is already consumed by my <a href="https://123k.work">new stati
                 }
 
     }</code></pre></div>
-
 <p>And I prepared a &lsquo;legacy&rsquo; version of the same call, which collects all the data
 on server side before sending it out. This call is even in production while switching tracks on the front page of <a href="https://123k.org">123k.org</a>.</p>
-
 <p>I think, I will  have to follow that path because of the Kotlin language. It would be a good thing to learn for
 the future. Especially in combination with the Spring-Boot framework - you can really feel, that they put a lot of effort in
 the integration there. It&rsquo;s not just that you use java API from another language - it really &lsquo;feels&rsquo; differently.</p>
-
-<h2 id="choiny-handrolled-go">Choiny - Handrolled Go</h2>
-
+<h2 id="choiny---handrolled-go">Choiny - Handrolled Go</h2>
 <p>The second one I started is a Go version of the same service which is named <a href="https://github.com/efwe/choiny">Choiny</a> (an even smaller <a href="https://goo.gl/maps/pR78PZjGTcL2">village</a> and a popular path to the east for me).</p>
-
 <p>This one can not do too much right now - only one MongoDB query and playback. Nothing from this is in production yet.
 The plan is to provide the same API as Mosty does and compare the programming model, performance (Not really - I do not
 think, that I can seriously measure something here) and everything in between.</p>
-
 <p>Overall this is a very ambitious goal - so for now I just want to play around with a new language and
- as the the official <a href="https://github.com/mongodb/mongo-go-driver">MongoDB Go Driver</a> is
- reaching 1.0.0 soon this is a very good time to start with.</p>
-
+as the the official <a href="https://github.com/mongodb/mongo-go-driver">MongoDB Go Driver</a> is
+reaching 1.0.0 soon this is a very good time to start with.</p>
 <h1 id="relocate-everything-to-hetzner-cloud">Relocate everything to Hetzner Cloud</h1>
-
-<p>Because of the fact, that I want to put a JVM service into production for the first time in years I decided <sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup> to split my setup up.
+<p>Because of the fact, that I want to put a JVM service into production for the first time in years I decided <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> to split my setup up.
 Instead of one freeBSD box which does everything, I know have two servers.</p>
-
-<h2 id="tontu-123k-org">tontu.123k.org</h2>
-
+<h2 id="tontu123korg">tontu.123k.org</h2>
 <p><a href="http://tontu.123k.org">Tontu</a> is the freeBSD frontend server which hosts the static website for <a href="https://123k.work">123k.work</a> and
 the rails installation for <a href="https://123k.org">123k.org</a>.</p>
-
-<h2 id="hilda-123k-org">hilda.123k.org</h2>
-
+<h2 id="hilda123korg">hilda.123k.org</h2>
 <p><a href="http://hilda.123k.org">Hilda</a> is the Ubuntu Linux backend server which hosts the mongodb and the JVM service. It is referenced
 as <a href="https://map.123k.org">https://map.123k.org</a> from the frontend. The MongoDB is still unsecured but listens on a public IP now -
 a medium good idea as we learned in the past. For now I limit access via a firewall rule, but this is not optimal.</p>
-
 <h2 id="hetzner-cloud">Hetzner Cloud</h2>
-
 <p>I use <a href="htts://hetzner.de">Hetzner</a> for 15 years now and I&rsquo;m still a fan (of course also because their origins are from Franconia Germany).
 This is the second time I use their &lsquo;Cloud&rsquo; in production. Everything was super-easy. I even started using
 the <a href="https://github.com/hetznercloud/cli">hcloud</a> command line tool.</p>
-
-<h1 id="stream-consumers-sse-vs-websockets">Stream Consumers - SSE vs. Websockets</h1>
-
+<h1 id="stream-consumers---sse-vs-websockets">Stream Consumers - SSE vs. Websockets</h1>
 <p>All of the tutorials for Spring-Boot-Webflux somehow ended with a pointer to Websockets.
 So as I have already experience with Websockets and I do not plan to use the main features of them (full-duplex messaging, long-time-listening where events come late
 after hours).</p>
-
 <p>I just want to answer one request, with a little bit more result-data than usual so that it would be a good
 idea to <em>not</em> buffer that stuff on the server but start streaming immediately.</p>
-
 <p>Because of this I stepped back to SSE - Server Send Events. From a Server point of view, they where really easy to generate.
 But on the client the programming model feels a little bit rough. So the main plan is to use Stackoverflow again
 and <a href="https://stackoverflow.com/questions/36827270/creating-an-rxjs-observable-from-a-server-sent-eventsource">create an Observable for an EventSource stream</a>.</p>
-
 <p>But for now we will have something like this:</p>
-
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-coffee-script" data-lang="coffee-script">switchTrack: <span style="color:#a6e22e">(id) -&gt;</span>
   <span style="color:#a6e22e">@trackLayer</span>.<span style="color:#a6e22e">clearLayers</span>()
   polyline = <span style="color:#a6e22e">L</span>.<span style="color:#a6e22e">polyline</span>([], <span style="color:#a6e22e">@lineOptions</span>);
@@ -245,20 +215,18 @@ and <a href="https://stackoverflow.com/questions/36827270/creating-an-rxjs-obser
     <span style="color:#a6e22e">@map</span>.<span style="color:#a6e22e">fitBounds</span>(<span style="color:#a6e22e">polyline</span>.<span style="color:#a6e22e">getBounds</span>())
 
   <span style="color:#a6e22e">eventSource</span>.<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#39;point&#39;</span>, <span style="color:#a6e22e">pointEventHandler</span>, <span style="color:#66d9ef">false</span>)</code></pre></div>
-
 <p>You can find the first test-results on my new static site <a href="https://123k.work">123k.work</a>.
 I use the popular Vue framework there - but instead of rapid prototyping I lose myself in
 details and already wasted hours for basic stuff <em>in which I am fundamentally not interested</em> :-)
 So you can check my humble copy and paste efforts at the <a href="https://github.com/efwe/wazka.123k.pl">project on github</a></p>
-<div class="footnotes">
-
-<hr />
-
+<section class="footnotes" role="doc-endnotes">
+<hr>
 <ol>
-<li id="fn:1">Actually I was forced to use Linux, because the Java 11 port for freeBSD is not 100% ready yet.
- <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:1" role="doc-endnote">
+<p>Actually I was forced to use Linux, because the Java 11 port for freeBSD is not 100% ready yet. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
 </ol>
-</div>
+</section>
 <ul class="pa0">
   
 </ul>
@@ -299,7 +267,7 @@ So you can check my humble copy and paste efforts at the <a href="https://github
     <footer class="bg-dark-gray bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://123k.pl" >
-    &copy; 2019 123k.pl
+    &copy; 2020 123k.pl
   </a>
     <div>
 
