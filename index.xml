@@ -57,15 +57,6 @@ Solution I pretty much tried everything L.geoJSON layer with points and polygons
     </item>
     
     <item>
-      <title>fw@123k.org</title>
-      <link>https://123k.pl/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://123k.pl/about/</guid>
-      <description>Welcome to my personal blog. I&amp;rsquo;m Frank Waldheim. I work full-time as a dad for my daughter and a cat. I live in Poland, working remotely as a senior software engineer for EMPIC GmbH. When I have free time i walk around the woods or ride my bicycles.</description>
-    </item>
-    
-    <item>
       <title>Show routes to current geohash</title>
       <link>https://123k.pl/posts/show-routes-to-current-geohash/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>

@@ -79,12 +79,6 @@
   </url>
   
   <url>
-    <loc>https://123k.pl/about/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://123k.pl/categories/geohashing/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
