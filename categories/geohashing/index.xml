@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>geohashing on 123k.pl</title>
+    <title>Geohashing on 123k.pl</title>
     <link>https://123k.pl/categories/geohashing/</link>
-    <description>Recent content in geohashing on 123k.pl</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="https://123k.pl/categories/geohashing/index.xml" rel="self" type="application/rss+xml" />
+    <description>Recent content in Geohashing on 123k.pl</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 07 Jan 2016 09:29:50 +0100</lastBuildDate>
+    <atom:link href="https://123k.pl/categories/geohashing/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Show routes to current geohash</title>
-      <link>https://123k.pl/posts/show-routes-to-current-geohash/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://123k.pl/posts/show-routes-to-current-geohash/</guid>
-      <description>The Plan My geohashing alert2016-01-13 15:28-system at 123k.org shows the current geohash for my home graticule. The plan is to the nearest route which passes by.
-Finding Something As mentioned earlier I have all points i ever visited in a collection. This collection holds a geospatial index. Therefore I can issue mongo queries with the $nearSphere command. This command finds the first points from a given location.
- So this just works.</description>
+      <link>https://123k.pl/post/show-routes-to-current-geohash/</link>
+      <pubDate>Thu, 07 Jan 2016 09:29:50 +0100</pubDate>
+      <guid>https://123k.pl/post/show-routes-to-current-geohash/</guid>
+      <description>&lt;h1 id=&#34;the-plan&#34;&gt;The Plan&lt;/h1&gt;&#xA;&lt;p&gt;My geohashing alert2016-01-13 15:28-system at &lt;a href=&#34;https://123k.org/geohashing&#34;&gt;123k.org&lt;/a&gt; shows the current &lt;a href=&#34;http://wiki.xkcd.com/geohashing/&#34;&gt;geohash&lt;/a&gt; for my home &lt;a href=&#34;https://en.wikipedia.org/wiki/Geographic_coordinate_system&#34;&gt;graticule&lt;/a&gt;. The plan is to the nearest route which passes by.&lt;/p&gt;&#xA;&lt;h1 id=&#34;finding-something&#34;&gt;Finding Something&lt;/h1&gt;&#xA;&lt;p&gt;As mentioned &lt;a href=&#34;https://123k.pl/post/build-a-coverage-map-with-mongodb/&#34;&gt;earlier&lt;/a&gt; I have all points i ever visited in a collection.&#xA;This collection holds a &lt;a href=&#34;https://docs.mongodb.org/manual/applications/geospatial-indexes/&#34;&gt;geospatial index&lt;/a&gt;. Therefore I can issue mongo queries with&#xA;the &lt;code&gt;$nearSphere&lt;/code&gt; command. This command finds the first points from a given location.&lt;/p&gt;&#xA;&lt;script src=&#34;https://gist.github.com/efwe/c73ab0d887110156c2f9.js?file=first_route.rb&#34;&gt;&lt;/script&gt;&#xA;&#xA;&#xA;&lt;p&gt;So this just works. But what about other routes which may also be nice and just around the corner?&#xA;We can select many points around the hash point and check which routes they&amp;rsquo;re on.&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

@@ -1,32 +1,26 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>leaflet on 123k.pl</title>
+    <title>Leaflet on 123k.pl</title>
     <link>https://123k.pl/categories/leaflet/</link>
-    <description>Recent content in leaflet on 123k.pl</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Thu, 07 Jan 2016 09:29:50 +0100</lastBuildDate><atom:link href="https://123k.pl/categories/leaflet/index.xml" rel="self" type="application/rss+xml" />
+    <description>Recent content in Leaflet on 123k.pl</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 07 Jan 2016 09:29:50 +0100</lastBuildDate>
+    <atom:link href="https://123k.pl/categories/leaflet/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Many Clickable Points on a Leaflet Map With Leaflet.glify</title>
-      <link>https://123k.pl/posts/many-clickable-points-on-a-leaflet-map-with-leaflet-glify/</link>
+      <link>https://123k.pl/post/many-clickable-points-on-a-leaflet-map-with-leaflet-glify/</link>
       <pubDate>Thu, 07 Jan 2016 09:29:50 +0100</pubDate>
-      
-      <guid>https://123k.pl/posts/many-clickable-points-on-a-leaflet-map-with-leaflet-glify/</guid>
-      <description>Problem As seen in the post before we collected some 12.000 points which we want to display on a leaflet map. Every attempt to put that many points on one map failed. Firefox completely stopped working, chrome did a little bit better and stayed responsive, but that was not a solution at all.
-Solution I pretty much tried everything L.geoJSON layer with points and polygons. Where polygons would have been a solution maybe, but you can not tell leaflet to just draw the corners of the polygons.</description>
+      <guid>https://123k.pl/post/many-clickable-points-on-a-leaflet-map-with-leaflet-glify/</guid>
+      <description>&lt;h1 id=&#34;problem&#34;&gt;Problem&lt;/h1&gt;&#xA;&lt;p&gt;As seen in the &lt;a href=&#34;https://123k.pl/post/build-a-coverage-map-with-mongodb/&#34;&gt;post before&lt;/a&gt;&#xA;we collected some 12.000 points which we want to display on a leaflet map.&#xA;Every attempt to put that many points on one map failed. Firefox completely stopped working, chrome did&#xA;a  little bit better and stayed responsive, but that was not a solution at all.&lt;/p&gt;&#xA;&lt;h1 id=&#34;solution&#34;&gt;Solution&lt;/h1&gt;&#xA;&lt;p&gt;I pretty much tried everything &lt;code&gt;L.geoJSON&lt;/code&gt; layer with points and polygons.&#xA;Where polygons would have been a solution maybe, but you can not tell leaflet to just draw the corners of the polygons.&#xA;So I needed something else. In the &lt;code&gt;#leaflet&lt;/code&gt; on freenode i was pointed to the&#xA;&lt;a href=&#34;http://robertleeplummerjr.github.io/Leaflet.glify/&#34;&gt;Leaflet.glify&lt;/a&gt; project.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Show routes to current geohash</title>
-      <link>https://123k.pl/posts/show-routes-to-current-geohash/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://123k.pl/posts/show-routes-to-current-geohash/</guid>
-      <description>The Plan My geohashing alert2016-01-13 15:28-system at 123k.org shows the current geohash for my home graticule. The plan is to the nearest route which passes by.
-Finding Something As mentioned earlier I have all points i ever visited in a collection. This collection holds a geospatial index. Therefore I can issue mongo queries with the $nearSphere command. This command finds the first points from a given location.
- So this just works.</description>
+      <link>https://123k.pl/post/show-routes-to-current-geohash/</link>
+      <pubDate>Thu, 07 Jan 2016 09:29:50 +0100</pubDate>
+      <guid>https://123k.pl/post/show-routes-to-current-geohash/</guid>
+      <description>&lt;h1 id=&#34;the-plan&#34;&gt;The Plan&lt;/h1&gt;&#xA;&lt;p&gt;My geohashing alert2016-01-13 15:28-system at &lt;a href=&#34;https://123k.org/geohashing&#34;&gt;123k.org&lt;/a&gt; shows the current &lt;a href=&#34;http://wiki.xkcd.com/geohashing/&#34;&gt;geohash&lt;/a&gt; for my home &lt;a href=&#34;https://en.wikipedia.org/wiki/Geographic_coordinate_system&#34;&gt;graticule&lt;/a&gt;. The plan is to the nearest route which passes by.&lt;/p&gt;&#xA;&lt;h1 id=&#34;finding-something&#34;&gt;Finding Something&lt;/h1&gt;&#xA;&lt;p&gt;As mentioned &lt;a href=&#34;https://123k.pl/post/build-a-coverage-map-with-mongodb/&#34;&gt;earlier&lt;/a&gt; I have all points i ever visited in a collection.&#xA;This collection holds a &lt;a href=&#34;https://docs.mongodb.org/manual/applications/geospatial-indexes/&#34;&gt;geospatial index&lt;/a&gt;. Therefore I can issue mongo queries with&#xA;the &lt;code&gt;$nearSphere&lt;/code&gt; command. This command finds the first points from a given location.&lt;/p&gt;&#xA;&lt;script src=&#34;https://gist.github.com/efwe/c73ab0d887110156c2f9.js?file=first_route.rb&#34;&gt;&lt;/script&gt;&#xA;&#xA;&#xA;&lt;p&gt;So this just works. But what about other routes which may also be nice and just around the corner?&#xA;We can select many points around the hash point and check which routes they&amp;rsquo;re on.&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

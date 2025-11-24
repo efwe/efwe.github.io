@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tales from the Pool on 123k.pl</title>
-    <link>https://123k.pl/</link>
-    <description>Recent content in Tales from the Pool on 123k.pl</description>
+    <title>Posts on 123k.pl</title>
+    <link>https://123k.pl/post/</link>
+    <description>Recent content in Posts on 123k.pl</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Thu, 20 Nov 2025 20:00:00 +0100</lastBuildDate>
-    <atom:link href="https://123k.pl/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://123k.pl/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Everything from scratch (again)</title>
       <link>https://123k.pl/post/everything-from-scratch/</link>

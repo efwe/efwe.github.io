@@ -1,31 +1,26 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>mongodb on 123k.pl</title>
+    <title>Mongodb on 123k.pl</title>
     <link>https://123k.pl/categories/mongodb/</link>
-    <description>Recent content in mongodb on 123k.pl</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sat, 02 Jan 2016 19:38:06 +0100</lastBuildDate><atom:link href="https://123k.pl/categories/mongodb/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Build a Coverage Map With Mongodb</title>
-      <link>https://123k.pl/posts/build-a-coverage-map-with-mongodb/</link>
-      <pubDate>Sat, 02 Jan 2016 19:38:06 +0100</pubDate>
-      
-      <guid>https://123k.pl/posts/build-a-coverage-map-with-mongodb/</guid>
-      <description>Introduction When I started with my personal bike-track homepage at 123k.org a few years ago I decided to put all my tracks in a MongoDB. The model I use is very simple. I have a class Route which holds meta-data about the track and a class TrackPoint which represents a point and has a foreign key to the respective track (of course). After some years I have 612827 track-points. So 600k entries is not &amp;lsquo;big-data&amp;rsquo; exactly, but it is too much to be displayed on a leaflet map at once.</description>
-    </item>
-    
+    <description>Recent content in Mongodb on 123k.pl</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 07 Jan 2016 09:29:50 +0100</lastBuildDate>
+    <atom:link href="https://123k.pl/categories/mongodb/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Show routes to current geohash</title>
-      <link>https://123k.pl/posts/show-routes-to-current-geohash/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://123k.pl/posts/show-routes-to-current-geohash/</guid>
-      <description>The Plan My geohashing alert2016-01-13 15:28-system at 123k.org shows the current geohash for my home graticule. The plan is to the nearest route which passes by.
-Finding Something As mentioned earlier I have all points i ever visited in a collection. This collection holds a geospatial index. Therefore I can issue mongo queries with the $nearSphere command. This command finds the first points from a given location.
- So this just works.</description>
+      <link>https://123k.pl/post/show-routes-to-current-geohash/</link>
+      <pubDate>Thu, 07 Jan 2016 09:29:50 +0100</pubDate>
+      <guid>https://123k.pl/post/show-routes-to-current-geohash/</guid>
+      <description>&lt;h1 id=&#34;the-plan&#34;&gt;The Plan&lt;/h1&gt;&#xA;&lt;p&gt;My geohashing alert2016-01-13 15:28-system at &lt;a href=&#34;https://123k.org/geohashing&#34;&gt;123k.org&lt;/a&gt; shows the current &lt;a href=&#34;http://wiki.xkcd.com/geohashing/&#34;&gt;geohash&lt;/a&gt; for my home &lt;a href=&#34;https://en.wikipedia.org/wiki/Geographic_coordinate_system&#34;&gt;graticule&lt;/a&gt;. The plan is to the nearest route which passes by.&lt;/p&gt;&#xA;&lt;h1 id=&#34;finding-something&#34;&gt;Finding Something&lt;/h1&gt;&#xA;&lt;p&gt;As mentioned &lt;a href=&#34;https://123k.pl/post/build-a-coverage-map-with-mongodb/&#34;&gt;earlier&lt;/a&gt; I have all points i ever visited in a collection.&#xA;This collection holds a &lt;a href=&#34;https://docs.mongodb.org/manual/applications/geospatial-indexes/&#34;&gt;geospatial index&lt;/a&gt;. Therefore I can issue mongo queries with&#xA;the &lt;code&gt;$nearSphere&lt;/code&gt; command. This command finds the first points from a given location.&lt;/p&gt;&#xA;&lt;script src=&#34;https://gist.github.com/efwe/c73ab0d887110156c2f9.js?file=first_route.rb&#34;&gt;&lt;/script&gt;&#xA;&#xA;&#xA;&lt;p&gt;So this just works. But what about other routes which may also be nice and just around the corner?&#xA;We can select many points around the hash point and check which routes they&amp;rsquo;re on.&lt;/p&gt;</description>
     </item>
-    
+    <item>
+      <title>Build a Coverage Map With Mongodb</title>
+      <link>https://123k.pl/post/build-a-coverage-map-with-mongodb/</link>
+      <pubDate>Sat, 02 Jan 2016 19:38:06 +0100</pubDate>
+      <guid>https://123k.pl/post/build-a-coverage-map-with-mongodb/</guid>
+      <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;&#xA;&lt;p&gt;When I started with my personal bike-track homepage at &lt;a href=&#34;https://123k.org&#34;&gt;123k.org&lt;/a&gt; a few years ago I decided to put all my tracks&#xA;in a MongoDB. The model I use is very simple. I have a class &lt;code&gt;Route&lt;/code&gt; which holds meta-data about the track&#xA;and a class &lt;code&gt;TrackPoint&lt;/code&gt; which represents a point and has a foreign key to the respective track (of course).&#xA;After some years I have 612827 track-points. So 600k entries is not &amp;lsquo;big-data&amp;rsquo; exactly,&#xA;but it is too much to be displayed on a leaflet map at once. What I really wanted is a &amp;lsquo;Coverage View&amp;rsquo;, which just&#xA;shows me where I&amp;rsquo;ve been with the bike.&lt;/p&gt;</description>
+    </item>
   </channel>
 </rss>
